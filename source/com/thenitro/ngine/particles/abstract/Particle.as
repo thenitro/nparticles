@@ -5,7 +5,7 @@ package com.thenitro.ngine.particles.abstract {
 	
 	import starling.display.Shape;
 	
-	public final class Particle extends Entity {
+	public class Particle extends Entity {
 		public var initLife:Number;
 		public var life:Number;
 		
@@ -18,15 +18,8 @@ package com.thenitro.ngine.particles.abstract {
 		public var scale:Number;
 		
 		public function Particle() {
-			//test
 			super();
-			
-			var shape:Shape = new Shape();
-				shape.graphics.beginFill(0x0);
-				shape.graphics.drawRect(0, 0, 10, 10);
-				shape.graphics.endFill();
-			
-			_canvas = shape;
+			draw();
 		};
 		
 		override public function get reflection():Class {
@@ -62,6 +55,15 @@ package com.thenitro.ngine.particles.abstract {
 		
 		override public function dispose():void {
 			super.dispose();
+		};
+		
+		protected function draw():void {
+			var shape:Shape = new Shape();
+				shape.graphics.beginFill(0xFFFFFF);
+				shape.graphics.drawRect(0, 0, 10, 10);
+				shape.graphics.endFill();
+			
+			_canvas = shape;
 		};
 	}
 }

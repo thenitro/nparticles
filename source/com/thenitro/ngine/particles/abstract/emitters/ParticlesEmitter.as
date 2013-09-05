@@ -25,6 +25,11 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		
 		public var particleOmegaVariation:Number;
 		
+		public var direction:Number;
+		public var directionVariation:Number;
+		
+		public var ParticleClass:Class;
+		
 		private var _container:Sprite;
 		private var _manager:EntityManager;
 		
@@ -85,10 +90,10 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		
 		private function createParticles(pNumParticles:uint):void {
 			for (var i:int = 0; i < pNumParticles; i++) {
-				var particle:Particle = _pool.get(Particle) as Particle;
+				var particle:Particle = _pool.get(ParticleClass) as Particle;
 				if (!particle) {
-					particle = new Particle();
-					_pool.allocate(Particle, 1);
+					particle = new ParticleClass();
+					_pool.allocate(ParticleClass, 1);
 				}
 				
 					particle.orientation = Random.variation(0, 180);
@@ -104,13 +109,15 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					particle.growTime   = particleGrowRatio   * particle.initLife;
 					particle.shrinkTime = particleShrinkRatio * particle.initLife;
 					
-					particle.velocity.fromAngle(Random.variation(0, Math.PI), 
+					particle.velocity.fromAngle(Random.variation(direction, 
+																 directionVariation), 
 												Random.variation(particleSpeed, 
 																 particleSpeedVariation));
 					
 					particle.omega = Random.variation(0.0, particleOmegaVariation);
+					particle.life  = particle.initLife;
 					
-					particle.life = particle.initLife;
+				initPosition(particle);
 				
 				_container.addChild(particle.canvas);
 				
