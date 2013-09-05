@@ -18,6 +18,7 @@ package com.thenitro.ngine.particles.abstract {
 		public var scale:Number;
 		
 		public function Particle() {
+			//test
 			super();
 			
 			var shape:Shape = new Shape();
