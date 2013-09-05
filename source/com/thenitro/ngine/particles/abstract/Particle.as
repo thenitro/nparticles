@@ -1,153 +1,66 @@
 package com.thenitro.ngine.particles.abstract {
-	import com.thenitro.ngine.pool.IReusable;
+	import com.thenitro.ngine.display.gameentity.Entity;
+	import com.thenitro.ngine.math.TMath;
+	import com.thenitro.ngine.math.vectors.Vector2D;
 	
-	import starling.display.Image;
-	import starling.display.Sprite;
-	import starling.textures.Texture;
+	import starling.display.Shape;
 	
-	public class Particle extends Sprite implements IReusable {
-		public var vx:Number;
-		public var vy:Number;
-				
-		private var _emitter:ParticlesEmitter;
-		private var _parameters:ParticlesParameters;
+	public final class Particle extends Entity {
+		public var initLife:Number;
+		public var life:Number;
 		
-		private var _speedX:Number;
-		private var _speedY:Number;
+		public var growTime:Number;
+		public var shrinkTime:Number;
 		
-		private var _life:uint;
+		public var omega:Number;
+		
+		public var initScale:Number;
+		public var scale:Number;
 		
 		public function Particle() {
 			super();
+			
+			var shape:Shape = new Shape();
+				shape.graphics.beginFill(0x0);
+				shape.graphics.drawRect(0, 0, 10, 10);
+				shape.graphics.endFill();
+			
+			_canvas = shape;
 		};
-
-		public function get reflection():Class {
+		
+		override public function get reflection():Class {
 			return Particle;
 		};
 		
-		public function get emitter():ParticlesEmitter {
-			return _emitter;
-		}
-
-		public function set emitter(pValue:ParticlesEmitter):void {
-			_emitter = pValue;
-		};
-		
-		public function get parameters():ParticlesParameters {
-			return _parameters;
-		};
-		
-		public function set parameters(pValue:ParticlesParameters):void {
-			_parameters = pValue;
-		};
-		
-		public function get id():uint {
-			return 0;
-		};
-		
-		public function get typeID():uint {
-			return 0;
-		};
-		
-		public function get layerID():uint {
-			return 0;
-		};
-		
-		public function get life():uint {
-			return _life;
-		};
-		
-		public function get depth():Number {
-			return 0;
-		};
-		
-		public function get speedX():Number {
-			return _speedX;
-		};
-		
-		public function get speedY():Number {
-			return _speedY;
-		};
-		
-		public function get inViewport():Boolean {
-			return true;
-		};
-		
-		public function poolPrepare():void {
-			removeChildren(0, -1, true);
+		override public function update():void {
+			life -= 0.01;
 			
-			_life = 0;
+			if (life <= 0) {
+				expire();
+				return;
+			}
 			
-			vx = 0;
-			vy = 0;
+			if (life > initLife - growTime) {
+				scale = TMath.lerp(0.0, initScale, (initLife - life) / growTime);
+			} else if (life < shrinkTime) {
+				scale = TMath.lerp(initScale, 0.0, (shrinkTime - life) / shrinkTime);
+			} else {
+				scale = initScale;
+			}
+			
+			_orientation += omega;
+				
+			super.update();
+			
+			_canvas.scaleX = _canvas.scaleY = scale;
+		};
+		
+		override public function poolPrepare():void {
+			super.poolPrepare();
 		};
 		
 		override public function dispose():void {
 			super.dispose();
-			removeChildren(0, -1, true);
-		};
-		
-		public function setLayerID(pID:uint):void {
-			return;
-		};
-		
-		public function setup(pX:Number, pY:Number, 
-							  pTexture:Texture, pLife:Number, 
-							  pVX:Number, pVY:Number, 
-							  pSpeedX:Number, pSpeedY:Number, pRandom:Boolean):void {
-			//create an image
-			if (pTexture) {
-				var image:Image = new Image(pTexture);
-				addChild(image);
-			}
-			
-			x = (isNaN(pX)) ? x : pX - image.width  / 2;
-			y = (isNaN(pY)) ? y : pY - image.height / 2;
-			
-			_life = (isNaN(pLife)) ? _life : uint(pLife);
-			
-			vx = (isNaN(pVX)) ? vx : pVX;
-			vy = (isNaN(pVY)) ? vy : pVY;
-			
-			if (pRandom) {
-				var leftOrRight:Number = uint(Math.random() * 2);
-				
-				vx = (leftOrRight) ? vx : -vx;
-				
-				
-				if (pSpeedX != 0) {
-					_speedX = (isNaN(pSpeedX)) ? _speedX : pSpeedX * Math.random();
-				} else {
-					_speedX = 0;
-				}
-				
-				if (vx < 0) {
-					_speedX *= -1;
-				}
-				
-				if (pSpeedY != 0) {
-					_speedY = (isNaN(pSpeedY)) ? _speedY : pSpeedY * Math.random();				
-				} else {
-					_speedY = 0;
-				}
-			} else {
-				if (pSpeedX != 0) {
-					_speedX = (isNaN(pSpeedX)) ? _speedX : pSpeedX;
-				} else {
-					_speedX = 0;
-				}
-				
-				if (pSpeedY != 0) {
-					_speedY = (isNaN(pSpeedY)) ? _speedY : pSpeedY;				
-				} else {
-					_speedY = 0;
-				}
-			}
-		};
-		
-		public function updateScreenPosition():void {
-			x += vx;
-			y += vy;
 		};
 	}
 }
