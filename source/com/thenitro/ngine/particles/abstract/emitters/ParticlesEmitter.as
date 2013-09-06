@@ -35,6 +35,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		public var particlesPosition:ParticlesPosition;
 		public var particlesExpire:ParticlesExpire;
 		
+		public var particleColor:uint;
+		
 		private var _container:Sprite;
 		private var _manager:EntityManager;
 		
@@ -91,6 +93,12 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			super.poolPrepare();
 			
 			_framesPerParticle = 0;
+			
+			_pool.put(particlesPosition);
+			_pool.put(particlesExpire);
+			
+			particlesPosition = null;
+			particlesExpire   = null;			
 		};
 		
 		override public function dispose():void {
@@ -100,6 +108,12 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			
 			_container.dispose();
 			_container = null;
+			
+			_pool.put(particlesPosition);
+			_pool.put(particlesExpire);
+			
+			particlesPosition = null;
+			particlesExpire   = null;
 		};
 		
 		private function createParticles(pNumParticles:uint):void {
@@ -131,6 +145,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					
 					particle.omega = Random.variation(0.0, particleOmegaVariation);
 					particle.life  = particle.initLife;
+					
+					particle.draw(particleColor);
 					
 					particlesPosition.setUpParticle(particle);
 				

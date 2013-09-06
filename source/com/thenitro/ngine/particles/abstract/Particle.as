@@ -19,7 +19,6 @@ package com.thenitro.ngine.particles.abstract {
 		
 		public function Particle() {
 			super();
-			draw();
 		};
 		
 		override public function get reflection():Class {
@@ -51,15 +50,18 @@ package com.thenitro.ngine.particles.abstract {
 		
 		override public function poolPrepare():void {
 			super.poolPrepare();
+			
+			_canvas.dispose();
+			_canvas = null;
 		};
 		
 		override public function dispose():void {
 			super.dispose();
 		};
 		
-		protected function draw():void {
+		public function draw(pColor:uint):void {
 			var shape:Shape = new Shape();
-				shape.graphics.beginFill(0xFFFFFF);
+				shape.graphics.beginFill(pColor);
 				shape.graphics.drawRect(0, 0, 10, 10);
 				shape.graphics.endFill();
 			
