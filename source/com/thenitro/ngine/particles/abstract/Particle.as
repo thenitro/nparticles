@@ -17,6 +17,8 @@ package com.thenitro.ngine.particles.abstract {
 		public var initScale:Number;
 		public var scale:Number;
 		
+		private var _color:uint;
+		
 		public function Particle() {
 			super();
 		};
@@ -48,24 +50,32 @@ package com.thenitro.ngine.particles.abstract {
 			_canvas.scaleX = _canvas.scaleY = scale;
 		};
 		
-		override public function poolPrepare():void {
-			super.poolPrepare();
-			
-			_canvas.dispose();
-			_canvas = null;
-		};
-		
-		override public function dispose():void {
-			super.dispose();
-		};
-		
 		public function draw(pColor:uint):void {
+			if (!needRedraw(pColor)) {
+				return;
+			}
+			
 			var shape:Shape = new Shape();
 				shape.graphics.beginFill(pColor);
 				shape.graphics.drawRect(0, 0, 10, 10);
 				shape.graphics.endFill();
 			
 			_canvas = shape;
+		};
+		
+		protected function needRedraw(pColor:uint):Boolean {
+			if (pColor != _color) {
+				_color = pColor;
+				
+				if (_canvas) {
+					_canvas.dispose();
+					_canvas = null;
+				}
+				
+				return true;
+			}
+			
+			return false;
 		};
 	}
 }
