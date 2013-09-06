@@ -3,6 +3,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 	import com.thenitro.ngine.display.gameentity.manager.EntityManager;
 	import com.thenitro.ngine.math.Random;
 	import com.thenitro.ngine.particles.abstract.Particle;
+	import com.thenitro.ngine.particles.abstract.emitters.expire.ParticlesExpire;
+	import com.thenitro.ngine.particles.abstract.emitters.position.ParticlesPosition;
 	import com.thenitro.ngine.pool.IReusable;
 	
 	import starling.display.Sprite;
@@ -30,6 +32,9 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		
 		public var ParticleClass:Class;
 		
+		public var particlesPosition:ParticlesPosition;
+		public var particlesExpire:ParticlesExpire;
+		
 		private var _container:Sprite;
 		private var _manager:EntityManager;
 		
@@ -53,7 +58,15 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_framesPerParticle = 0;
 		};
 		
+		override public function get reflection():Class {
+			return ParticlesEmitter;
+		};
+		
 		override public function update():void {
+			if (particlesExpire) {
+				particlesExpire.update();
+			}
+			
 			_position.x += _velocity.x;
 			_position.y += _velocity.y;
 			
@@ -85,12 +98,14 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			
 			_pool.put(_manager);
 			
+			_container.dispose();
 			_container = null;
 		};
 		
 		private function createParticles(pNumParticles:uint):void {
 			for (var i:int = 0; i < pNumParticles; i++) {
 				var particle:Particle = _pool.get(ParticleClass) as Particle;
+				
 				if (!particle) {
 					particle = new ParticleClass();
 					_pool.allocate(ParticleClass, 1);
@@ -117,7 +132,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					particle.omega = Random.variation(0.0, particleOmegaVariation);
 					particle.life  = particle.initLife;
 					
-				initPosition(particle);
+					particlesPosition.setUpParticle(particle);
 				
 				_container.addChild(particle.canvas);
 				
@@ -125,11 +140,11 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			}
 		};
 		
-		protected function initPosition(pParticle:Particle):void {
-			
-		};
-		
 		private function expiredEventHandler(pEvent:Event):void {
+			if (!pEvent.data || !_container) {
+				return;
+			}
+			
 			_container.removeChild(pEvent.data.canvas);
 		};
 	};
