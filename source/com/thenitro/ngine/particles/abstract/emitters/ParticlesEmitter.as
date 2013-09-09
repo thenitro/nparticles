@@ -35,7 +35,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		public var particlesPosition:ParticlesPosition;
 		public var particlesExpire:ParticlesExpire;
 		
-		public var particleColor:uint;
+		public var particleData:*;
 		
 		private var _container:Sprite;
 		private var _manager:EntityManager;
@@ -146,7 +146,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					particle.omega = Random.variation(0.0, particleOmegaVariation);
 					particle.life  = particle.initLife;
 					
-					particle.draw(particleColor);
+					particle.draw(particleData);
 					
 					particlesPosition.setUpParticle(particle);
 				
