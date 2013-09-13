@@ -54,7 +54,6 @@ package com.thenitro.ngine.particles.abstract.emitters {
 				_pool.allocate(EntityManager, 1);
 			}
 			
-			_manager.init(false);
 			_manager.addEventListener(EntityManager.EXPIRED, expiredEventHandler);
 			
 			_framesPerParticle = 0;

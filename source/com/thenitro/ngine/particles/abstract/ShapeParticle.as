@@ -1,7 +1,7 @@
 package com.thenitro.ngine.particles.abstract {
-	import flash.display.Shape;
+	import starling.display.Shape;
 
-	public final class ShapeParticle extends Particle {
+	public class ShapeParticle extends Particle {
 		private var _color:uint;
 		
 		public function ShapeParticle() {
