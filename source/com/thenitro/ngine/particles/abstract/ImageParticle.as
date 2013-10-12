@@ -18,7 +18,7 @@ package com.thenitro.ngine.particles.abstract {
 				return;
 			}
 			
-			_canvas = new Image(pTexure);;
+			_canvas = new Image(pTexure);
 		};
 		
 		protected function needRedraw(pTexture:Texture):Boolean {
