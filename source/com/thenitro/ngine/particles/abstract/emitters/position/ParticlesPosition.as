@@ -1,7 +1,8 @@
 package com.thenitro.ngine.particles.abstract.emitters.position {
 	import com.thenitro.ngine.particles.abstract.Particle;
-	import com.thenitro.ngine.pool.IReusable;
-	import com.thenitro.ngine.pool.Pool;
+	
+	import ngine.pool.IReusable;
+	import ngine.pool.Pool;
 	
 	public class ParticlesPosition implements IReusable {
 		protected static var _pool:Pool = Pool.getInstance();

@@ -1,9 +1,9 @@
 package com.thenitro.ngine.particles.abstract.emitters.position {
-	import com.thenitro.ngine.math.Random;
-	import com.thenitro.ngine.math.TRectangle;
-	import com.thenitro.ngine.math.vectors.Vector2D;
 	import com.thenitro.ngine.particles.abstract.Particle;
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
+	
+	import ngine.math.Random;
+	import ngine.math.vectors.Vector2D;
 	
 	public final class RectangleParticles extends ParticlesPosition {
 		private var _emitter:ParticlesEmitter;

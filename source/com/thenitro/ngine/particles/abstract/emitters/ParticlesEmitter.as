@@ -1,11 +1,12 @@
 package com.thenitro.ngine.particles.abstract.emitters {
-	import com.thenitro.ngine.display.gameentity.Entity;
-	import com.thenitro.ngine.display.gameentity.manager.EntityManager;
-	import com.thenitro.ngine.math.Random;
 	import com.thenitro.ngine.particles.abstract.Particle;
 	import com.thenitro.ngine.particles.abstract.emitters.expire.ParticlesExpire;
 	import com.thenitro.ngine.particles.abstract.emitters.position.ParticlesPosition;
-	import com.thenitro.ngine.pool.IReusable;
+	
+	import ngine.core.Entity;
+	import ngine.core.manager.EntityManager;
+	import ngine.math.Random;
+	import ngine.pool.IReusable;
 	
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -63,7 +64,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			return ParticlesEmitter;
 		};
 		
-		override public function update():void {
+		override public function update(pElapsed:Number):void {
 			if (particlesExpire) {
 				particlesExpire.update();
 			}

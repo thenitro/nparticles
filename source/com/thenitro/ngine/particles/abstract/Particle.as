@@ -1,6 +1,6 @@
 package com.thenitro.ngine.particles.abstract {
-	import com.thenitro.ngine.display.gameentity.Entity;
-	import com.thenitro.ngine.math.TMath;
+	import ngine.core.Entity;
+	import ngine.math.TMath;
 	
 	public class Particle extends Entity {
 		public var initLife:Number;
@@ -22,7 +22,7 @@ package com.thenitro.ngine.particles.abstract {
 			return Particle;
 		};
 		
-		override public function update():void {
+		override public function update(pElapsed:Number):void {
 			life -= 0.01;
 			
 			if (life <= 0) {
@@ -40,7 +40,7 @@ package com.thenitro.ngine.particles.abstract {
 			
 			_orientation += omega;
 				
-			super.update();
+			super.update(pElapsed);
 			
 			_canvas.scaleX = _canvas.scaleY = scale;
 		};
