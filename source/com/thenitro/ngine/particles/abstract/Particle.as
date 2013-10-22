@@ -23,7 +23,7 @@ package com.thenitro.ngine.particles.abstract {
 		};
 		
 		override public function update(pElapsed:Number):void {
-			life -= 0.01;
+			life -= pElapsed;
 			
 			if (life <= 0) {
 				expire();
