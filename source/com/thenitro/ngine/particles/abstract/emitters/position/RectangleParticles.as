@@ -23,8 +23,8 @@ package com.thenitro.ngine.particles.abstract.emitters.position {
 		};
 		
 		override public function setUpParticle(pParticle:Particle):void {
-			pParticle.position.x = Random.range(_emitter.position.x, _dimension.x);
-			pParticle.position.y = Random.range(_emitter.position.y, _dimension.y);
+			pParticle.position.x = Random.range(_emitter.position.x, _emitter.position.x + _dimension.x);
+			pParticle.position.y = Random.range(_emitter.position.y, _emitter.position.y + _dimension.y);
 		};
 		
 		override public function poolPrepare():void {
