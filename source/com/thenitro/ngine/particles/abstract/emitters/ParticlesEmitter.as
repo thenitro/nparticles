@@ -55,6 +55,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 				_pool.allocate(EntityManager, 1);
 			}
 			
+			_manager.addEventListener(EntityManager.ADDED,   adddedEventHandler);
 			_manager.addEventListener(EntityManager.EXPIRED, expiredEventHandler);
 			
 			_framesPerParticle = 0;
@@ -149,11 +150,21 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					particle.draw(particleData);
 					
 					particlesPosition.setUpParticle(particle);
-				
-				_container.addChild(particle.canvas);
+					
+					particle.update(0);
 				
 				_manager.add(particle);
 			}
+		};
+		
+		private function adddedEventHandler(pEvent:Event):void {
+			var particle:Particle = pEvent.data as Particle;
+			
+			if (!particle || particle.expired) {
+				return;
+			}
+			
+			_container.addChild(particle.canvas);
 		};
 		
 		private function expiredEventHandler(pEvent:Event):void {
