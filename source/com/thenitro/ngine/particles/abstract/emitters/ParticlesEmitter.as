@@ -73,7 +73,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_position.x += _velocity.x;
 			_position.y += _velocity.y;
 			
-			_manager.update();
+			_manager.update(pElapsed);
 			
 			if (emissionRate >= 1) {
 				createParticles(emissionRate);
