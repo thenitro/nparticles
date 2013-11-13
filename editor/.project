@@ -18,22 +18,32 @@
 		<link>
 			<name>[source path] MinimalMobileTheme-source</name>
 			<type>2</type>
-			<location>D:/libs/feathers/themes/MinimalMobileTheme/source</location>
+			<location>E:/libs/feathers/themes/MinimalMobileTheme/source</location>
 		</link>
 		<link>
 			<name>[source path] feathers-source</name>
 			<type>2</type>
-			<location>D:/libs/feathers/source</location>
+			<location>E:/libs/feathers/source</location>
+		</link>
+		<link>
+			<name>[source path] ndatas-source</name>
+			<type>2</type>
+			<location>E:/ndatas/source</location>
 		</link>
 		<link>
 			<name>[source path] ngine-source</name>
 			<type>2</type>
-			<location>D:/ngine/source</location>
+			<location>E:/ngine/source</location>
 		</link>
 		<link>
 			<name>[source path] nparticles-source</name>
 			<type>2</type>
-			<location>D:/nparticles/source</location>
+			<location>E:/nparticles/source</location>
+		</link>
+		<link>
+			<name>[source path] npooling-source</name>
+			<type>2</type>
+			<location>E:/npooling/source</location>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -1,12 +1,13 @@
 package com.thenitro.ngine.particles.abstract.emitters {
-	import com.thenitro.ngine.particles.abstract.particles.Particle;
 	import com.thenitro.ngine.particles.abstract.emitters.expire.ParticlesExpire;
 	import com.thenitro.ngine.particles.abstract.emitters.position.ParticlesPosition;
+	import com.thenitro.ngine.particles.abstract.particles.Particle;
 	
 	import ngine.core.Entity;
 	import ngine.core.manager.EntityManager;
 	import ngine.math.Random;
-	import ngine.pool.IReusable;
+	
+	import npooling.IReusable;
 	
 	import starling.display.Sprite;
 	import starling.events.Event;

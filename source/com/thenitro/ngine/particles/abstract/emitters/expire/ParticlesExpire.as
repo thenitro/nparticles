@@ -1,5 +1,5 @@
 package com.thenitro.ngine.particles.abstract.emitters.expire {
-	import ngine.pool.IReusable;
+	import npooling.IReusable;
 	
 	public class ParticlesExpire implements IReusable {
 		
