@@ -14,6 +14,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 	import starling.events.Event;
 	
 	public class ParticlesEmitter extends Entity implements IReusable {
+		public static const VERSION:String = '1.0.0';
+		
 		public var emissionRate:Number;
 		
 		public var particleLife:Number;

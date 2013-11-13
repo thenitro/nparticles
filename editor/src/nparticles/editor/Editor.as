@@ -1,12 +1,12 @@
 package nparticles.editor {
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
 	import com.thenitro.ngine.particles.abstract.emitters.position.RectangleParticles;
+	import com.thenitro.ngine.particles.abstract.loader.EmitterParametersLoader;
 	import com.thenitro.ngine.particles.abstract.particles.ImageParticle;
 	import com.thenitro.ngine.particles.abstract.particles.QuadParticle;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
-	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PickerList;
 	import feathers.controls.ScrollContainer;
@@ -14,13 +14,13 @@ package nparticles.editor {
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.themes.AeonDesktopTheme;
-	import feathers.themes.MinimalMobileTheme;
 	
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
+	import flash.utils.ByteArray;
 	
 	import ngine.math.Geometry;
 	import ngine.math.Random;
@@ -41,6 +41,27 @@ package nparticles.editor {
 		
 		private var _background:Sprite;
 		
+		private var _emissionRate:NumericStepper;
+		
+		private var _particleLife:NumericStepper;
+		private var _particleLifeVariation:NumericStepper;
+		
+		private var _particleScale:NumericStepper;
+		private var _particleScaleVariation:NumericStepper;
+		
+		private var _particleGrowRatio:NumericStepper;
+		private var _particleShrinkRatio:NumericStepper;
+		
+		private var _particleSpeed:NumericStepper;
+		private var _particleSpeedVariation:NumericStepper;
+		
+		private var _particleOmegaVariation:NumericStepper;
+		
+		private var _direction:NumericStepper;
+		private var _directionVariation:NumericStepper;
+		
+		private var _blendMode:PickerList;
+		
 		public function Editor() {
 			super();
 			addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageEventHandler);
@@ -51,8 +72,9 @@ package nparticles.editor {
 			
 			new AeonDesktopTheme();
 			
-			createGUI();
+			createBackground();
 			createParticles();
+			createGUI();
 			
 			addEventListener(starling.events.Event.ENTER_FRAME, enterFrameEventHandler);
 		};
@@ -101,8 +123,6 @@ package nparticles.editor {
 		};
 		
 		private function createGUI():void {
-			createBackground();
-			
 			createFileContainer();
 			createParametersContainer();
 			
@@ -111,24 +131,24 @@ package nparticles.editor {
 			createButton("Save", 	   saveButtonTriggeredEventHandler);
 			createButton("Load", 	   loadButtonTriggeredEventHandler);
 			
-			createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
+			_emissionRate = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
 			
-			createStepper("Particle life",  8.0, 0.1, particleLifeChangeEventHandler);
-			createStepper("Life variation", 4.0, 0.1, particleLifeVariationChangeEventHandler);
+			_particleLife = createStepper("Particle life",  8.0, 0.1, particleLifeChangeEventHandler);
+			_particleLifeVariation = createStepper("Life variation", 4.0, 0.1, particleLifeVariationChangeEventHandler);
 			
-			createStepper("Particle scale",  1.0, 0.05, particleScaleChangeEventHandler);
-			createStepper("Scale variation", 0.2, 0.01, particleScaleVariationChangeEventHandler);
+			_particleScale = createStepper("Particle scale",  1.0, 0.05, particleScaleChangeEventHandler);
+			_particleScaleVariation = createStepper("Scale variation", 0.2, 0.01, particleScaleVariationChangeEventHandler);
 			
-			createStepper("Pt Grow ratio",   0.3, 0.05, particleGrowRatioChangeEventHandler);
-			createStepper("Pt Shrink ratio", 0.5, 0.05, particleShrinkRatioChangeEventHandler);
+			_particleGrowRatio = createStepper("Pt Grow ratio",   0.3, 0.05, particleGrowRatioChangeEventHandler);
+			_particleShrinkRatio = createStepper("Pt Shrink ratio", 0.5, 0.05, particleShrinkRatioChangeEventHandler);
 			
-			createStepper("Particle speed",  -75, 1, particleSpeedChangeEventHandler);
-			createStepper("Speed variation", 25, 1, particleSpeedVariationChangeEventHandler);
+			_particleSpeed = createStepper("Particle speed",  -75, 1, particleSpeedChangeEventHandler);
+			_particleSpeedVariation = createStepper("Speed variation", 25, 1, particleSpeedVariationChangeEventHandler);
 			
-			createStepper("Pt Omega variation", Math.PI / 128, Math.PI / 512, particleOmegaVariationChangeEventHandler);
+			_particleOmegaVariation = createStepper("Pt Omega variation", Math.PI / 128, Math.PI / 512, particleOmegaVariationChangeEventHandler);
 			
-			createStepper("Particle direction", Math.PI / 2, Math.PI / 32, particleDirectionChangeEventHandler);
-			createStepper("Direction variation", Math.PI / 8, Math.PI / 32, particleDirectionVariationChangeEventHandler);
+			_direction = createStepper("Particle direction", Math.PI / 2, Math.PI / 32, particleDirectionChangeEventHandler);
+			_directionVariation = createStepper("Direction variation", Math.PI / 8, Math.PI / 32, particleDirectionVariationChangeEventHandler);
 			
 			createStepper("Emitter pos X", stage.stageWidth  / 2, 10, positionXChangeEventHandler);
 			createStepper("Emitter pos Y", stage.stageHeight / 2, 10, positionYChangeEventHandler);
@@ -136,12 +156,17 @@ package nparticles.editor {
 			createStepper("Emitter width", 20, 1, emitterWidthChangeEventHandler);
 			createStepper("Emitter height", 20, 1, emitterHeightChangeEventHandler);
 			
-			var list:PickerList = new PickerList();
+			var label:Label = new Label();
+				label.text  = "Blend mode";
 			
-				list.width  = 100;
-				list.height = 20;
+			_parameters.addChild(label);
+			
+			_blendMode = new PickerList();
+			
+			_blendMode.width  = 100;
+			_blendMode.height = 20;
 				
-				list.dataProvider = new ListCollection( [ { text: BlendMode.AUTO }, 
+			_blendMode.dataProvider = new ListCollection( [ { text: BlendMode.AUTO }, 
 														  { text: BlendMode.ADD },
 														  { text: BlendMode.ERASE },
 														  { text: BlendMode.MULTIPLY },
@@ -149,15 +174,15 @@ package nparticles.editor {
 														  { text: BlendMode.NORMAL },
 														  { text: BlendMode.SCREEN } ] );
 				
-				list.listProperties.@itemRendererProperties.labelField = "text";
+			_blendMode.listProperties.@itemRendererProperties.labelField = "text";
 				
-				list.labelField    = "text";
-				list.selectedIndex = 0;
+			_blendMode.labelField    = "text";
+			_blendMode.selectedIndex = 0;
 				
-				list.addEventListener(starling.events.Event.CHANGE, 
+			_blendMode.addEventListener(starling.events.Event.CHANGE, 
 									  blendModeTriggeredEventHandler);
 				
-			_parameters.addChild(list);
+			_parameters.addChild(_blendMode);
 		};
 		
 		private function createBackground():void {
@@ -210,7 +235,7 @@ package nparticles.editor {
 		};
 		
 		private function createStepper(pLabel:String, pInitValue:Number, 
-									   pStep:Number, pCallback:Function):void {
+									   pStep:Number, pCallback:Function):NumericStepper {
 			var label:Label = new Label();
 				label.text  = pLabel;
 			
@@ -231,6 +256,8 @@ package nparticles.editor {
 				stepper.addEventListener(starling.events.Event.CHANGE, pCallback);
 				
 			_parameters.addChild(stepper);
+			
+			return stepper;
 		};
 		
 		private function emissionRateChangeEventHandler(pEvent:starling.events.Event):void {
@@ -354,11 +381,77 @@ package nparticles.editor {
 		};
 		
 		private function saveButtonTriggeredEventHandler(pEvent:starling.events.Event):void {
+			var output:ByteArray = new ByteArray();
+				output.writeUTF("npt");
+				output.writeUTF(ParticlesEmitter.VERSION);
+				
+				output.writeDouble(_emitter.emissionRate);
+				
+				output.writeDouble(_emitter.particleLife);
+				output.writeDouble(_emitter.particleLifeVariation);
+				
+				output.writeDouble(_emitter.particleScale);
+				output.writeDouble(_emitter.particleScaleVariation);
+				
+				output.writeDouble(_emitter.particleGrowRatio);
+				output.writeDouble(_emitter.particleShrinkRatio);
+				
+				output.writeDouble(_emitter.particleSpeed);
+				output.writeDouble(_emitter.particleSpeedVariation);
+				
+				output.writeDouble(_emitter.particleOmegaVariation);
+				
+				output.writeDouble(_emitter.direction);
+				output.writeDouble(_emitter.directionVariation);
+				
+				output.writeUTF(_emitter.blendMode);
+				
+				output.compress();
 			
+			var fileRef:FileReference = new FileReference();
+				fileRef.save(output, "my_new_particle.npt");
 		};
 		
 		private function loadButtonTriggeredEventHandler(pEvent:starling.events.Event):void {
+			var filter:FileFilter     = new FileFilter("NPT (*.npt)", "*.npt;");
 			
+			var file:FileReference = new FileReference();
+				file.addEventListener(flash.events.Event.SELECT, function(pEvent:flash.events.Event):void {
+					file.load();
+				});
+				file.addEventListener(flash.events.Event.COMPLETE, function(pEvent:flash.events.Event):void {
+					var loader:EmitterParametersLoader = new EmitterParametersLoader();	
+						loader.loadBytes(file.data, _emitter);
+						
+					_emissionRate.value = _emitter.emissionRate;
+					
+					_particleLife.value = _emitter.particleLife;
+					_particleLifeVariation.value = _emitter.particleLifeVariation;
+					
+					_particleScale.value = _emitter.particleScale;
+					_particleScaleVariation.value = _emitter.particleScaleVariation;
+					
+					_particleGrowRatio.value = _emitter.particleGrowRatio;
+					_particleShrinkRatio.value = _emitter.particleShrinkRatio;
+					
+					_particleSpeed.value = _emitter.particleSpeed;
+					_particleSpeedVariation.value = _emitter.particleSpeedVariation;
+					
+					_particleOmegaVariation.value = _emitter.particleOmegaVariation;
+					
+					_direction.value = _emitter.direction;
+					_directionVariation.value = _emitter.directionVariation;
+					
+					for each (var item:Object in _blendMode.dataProvider.data) {
+						if (_emitter.blendMode == item.text) {
+							_blendMode.selectedItem = item;
+							break;
+						}						
+					}
+					
+				});
+			
+			file.browse( [ filter ] );
 		};
 	};
 }
