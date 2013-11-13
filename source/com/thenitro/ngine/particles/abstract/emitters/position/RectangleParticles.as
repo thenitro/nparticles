@@ -1,6 +1,6 @@
 package com.thenitro.ngine.particles.abstract.emitters.position {
-	import com.thenitro.ngine.particles.abstract.Particle;
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
+	import com.thenitro.ngine.particles.abstract.particles.Particle;
 	
 	import ngine.math.Random;
 	import ngine.math.vectors.Vector2D;
@@ -16,6 +16,10 @@ package com.thenitro.ngine.particles.abstract.emitters.position {
 		public function init(pEmitter:ParticlesEmitter, pDimension:Vector2D):void {
 			_emitter   = pEmitter;
 			_dimension = pDimension;
+		};
+		
+		public function get dimension():Vector2D {
+			return _dimension;
 		};
 		
 		override public function get reflection():Class {

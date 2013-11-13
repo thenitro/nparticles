@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>NParticlesEditor</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] MinimalMobileTheme-source</name>
+			<type>2</type>
+			<location>D:/libs/feathers/themes/MinimalMobileTheme/source</location>
+		</link>
+		<link>
+			<name>[source path] feathers-source</name>
+			<type>2</type>
+			<location>D:/libs/feathers/source</location>
+		</link>
+		<link>
+			<name>[source path] ngine-source</name>
+			<type>2</type>
+			<location>D:/ngine/source</location>
+		</link>
+		<link>
+			<name>[source path] nparticles-source</name>
+			<type>2</type>
+			<location>D:/nparticles/source</location>
+		</link>
+	</linkedResources>
+</projectDescription>

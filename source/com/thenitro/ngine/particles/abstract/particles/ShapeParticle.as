@@ -1,4 +1,4 @@
-package com.thenitro.ngine.particles.abstract {
+package com.thenitro.ngine.particles.abstract.particles {
 	import starling.display.Shape;
 
 	public class ShapeParticle extends Particle {

@@ -1,4 +1,4 @@
-package com.thenitro.ngine.particles.abstract {
+package com.thenitro.ngine.particles.abstract.particles {
 	import ngine.core.Entity;
 	import ngine.math.TMath;
 	

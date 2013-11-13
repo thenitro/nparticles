@@ -1,5 +1,5 @@
 package com.thenitro.ngine.particles.abstract.emitters.position {
-	import com.thenitro.ngine.particles.abstract.Particle;
+	import com.thenitro.ngine.particles.abstract.particles.Particle;
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
 	
 	public final class PointParticles extends ParticlesPosition {

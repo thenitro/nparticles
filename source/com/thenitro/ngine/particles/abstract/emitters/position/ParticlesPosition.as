@@ -1,5 +1,5 @@
 package com.thenitro.ngine.particles.abstract.emitters.position {
-	import com.thenitro.ngine.particles.abstract.Particle;
+	import com.thenitro.ngine.particles.abstract.particles.Particle;
 	
 	import ngine.pool.IReusable;
 	import ngine.pool.Pool;
