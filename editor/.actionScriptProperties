@@ -5,9 +5,10 @@
       <compilerSourcePathEntry kind="1" linkType="1" path="E:/ngine/source"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="E:/nparticles/source"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="E:/libs/feathers/source"/>
-      <compilerSourcePathEntry kind="1" linkType="1" path="E:/libs/feathers/themes/MinimalMobileTheme/source"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="E:/ndatas/source"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="E:/npooling/source"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="E:/libs/feathers/themes/MinimalMobileTheme/source"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="E:/libs/feathers/themes/AeonDesktopTheme/source"/>
     </compilerSourcePath>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
