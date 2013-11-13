@@ -31,6 +31,9 @@ package nparticles.editor {
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	
 	public final class Editor extends Sprite {
@@ -62,6 +65,8 @@ package nparticles.editor {
 		
 		private var _blendMode:PickerList;
 		
+		private var _isDown:Boolean;
+		
 		public function Editor() {
 			super();
 			addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageEventHandler);
@@ -77,6 +82,7 @@ package nparticles.editor {
 			createGUI();
 			
 			addEventListener(starling.events.Event.ENTER_FRAME, enterFrameEventHandler);
+			addEventListener(TouchEvent.TOUCH, touchEventHandler);
 		};
 		
 		private function enterFrameEventHandler(pEvent:EnterFrameEvent):void {
@@ -149,9 +155,6 @@ package nparticles.editor {
 			
 			_direction = createStepper("Particle direction", Math.PI / 2, Math.PI / 32, particleDirectionChangeEventHandler);
 			_directionVariation = createStepper("Direction variation", Math.PI / 8, Math.PI / 32, particleDirectionVariationChangeEventHandler);
-			
-			createStepper("Emitter pos X", stage.stageWidth  / 2, 10, positionXChangeEventHandler);
-			createStepper("Emitter pos Y", stage.stageHeight / 2, 10, positionYChangeEventHandler);
 			
 			createStepper("Emitter width", 20, 1, emitterWidthChangeEventHandler);
 			createStepper("Emitter height", 20, 1, emitterHeightChangeEventHandler);
@@ -452,6 +455,45 @@ package nparticles.editor {
 				});
 			
 			file.browse( [ filter ] );
+		};
+		
+		private function touchEventHandler(pEvent:TouchEvent):void {
+			var touch:Touch = pEvent.touches[0];
+			
+			if (!touch) {
+				return;
+			}
+			
+			trace("Editor.touchEventHandler(pEvent)", touch.phase);
+			
+			switch(touch.phase) {
+				case TouchPhase.BEGAN: {
+					_isDown = true;
+					
+					break;
+				}
+					
+				case TouchPhase.HOVER:
+				case TouchPhase.MOVED: {
+					if (_isDown) {
+						_emitter.position.x = touch.globalX;
+						_emitter.position.y = touch.globalY;
+					}
+					
+					break;
+				}
+					
+					
+				case TouchPhase.ENDED: {
+					_isDown = false;
+					
+					break;
+				}
+					
+				default: {
+					break;
+				}
+			}
 		};
 	};
 }
