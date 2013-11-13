@@ -6,8 +6,11 @@ package nparticles.editor {
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
+	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
+	import feathers.controls.PickerList;
 	import feathers.controls.ScrollContainer;
+	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.themes.AeonDesktopTheme;
@@ -23,6 +26,7 @@ package nparticles.editor {
 	import ngine.math.Random;
 	import ngine.math.vectors.Vector2D;
 	
+	import starling.display.BlendMode;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
@@ -86,6 +90,8 @@ package nparticles.editor {
 			
 			_emitter.particleData = Random.color;
 			
+			_emitter.blendMode = BlendMode.AUTO;
+			
 			var position:RectangleParticles = new RectangleParticles();
 				position.init(_emitter, new Vector2D(20, 20));
 			
@@ -129,6 +135,29 @@ package nparticles.editor {
 			
 			createStepper("Emitter width", 20, 1, emitterWidthChangeEventHandler);
 			createStepper("Emitter height", 20, 1, emitterHeightChangeEventHandler);
+			
+			var list:PickerList = new PickerList();
+			
+				list.width  = 100;
+				list.height = 20;
+				
+				list.dataProvider = new ListCollection( [ { text: BlendMode.AUTO }, 
+														  { text: BlendMode.ADD },
+														  { text: BlendMode.ERASE },
+														  { text: BlendMode.MULTIPLY },
+														  { text: BlendMode.NONE },
+														  { text: BlendMode.NORMAL },
+														  { text: BlendMode.SCREEN } ] );
+				
+				list.listProperties.@itemRendererProperties.labelField = "text";
+				
+				list.labelField    = "text";
+				list.selectedIndex = 0;
+				
+				list.addEventListener(starling.events.Event.CHANGE, 
+									  blendModeTriggeredEventHandler);
+				
+			_parameters.addChild(list);
 		};
 		
 		private function createBackground():void {
@@ -268,6 +297,12 @@ package nparticles.editor {
 			(_emitter.particlesPosition as RectangleParticles).dimension.y = (pEvent.target as NumericStepper).value;
 		};
 		
+		private function blendModeTriggeredEventHandler(pEvent:starling.events.Event):void {
+			var target:PickerList = pEvent.target as PickerList;
+			
+			_emitter.blendMode = target.selectedItem.text;
+		};
+		
 		private function backgroundButtonTriggeredEventHandler(pEvent:starling.events.Event):void {
 			var filter:FileFilter   = new FileFilter("Images", "*.jpg;*.jpeg;*.gif;*.png;");
 			
@@ -279,7 +314,7 @@ package nparticles.editor {
 					var loader:Loader = new Loader();
 						loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, function(pEvent:flash.events.Event):void {
 							var bitmap:Bitmap = pEvent.currentTarget.loader.content as Bitmap;
-							var image:Image   = new Image(Texture.fromBitmap(bitmap));
+							var image:Image   = new Image(Texture.fromBitmap(bitmap, false));
 							
 							Geometry.resizeDisplayObject(image, stage.stageWidth, stage.stageHeight, Geometry.determineMinScale);
 							

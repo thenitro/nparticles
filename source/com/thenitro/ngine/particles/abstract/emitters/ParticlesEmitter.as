@@ -9,6 +9,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 	
 	import npooling.IReusable;
 	
+	import starling.display.BlendMode;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
@@ -38,6 +39,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		public var particlesExpire:ParticlesExpire;
 		
 		public var particleData:*;
+		
+		public var blendMode:String = BlendMode.AUTO;
 		
 		private var _container:Sprite;
 		private var _manager:EntityManager;
@@ -126,8 +129,6 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					particle = new ParticleClass();
 					_pool.allocate(ParticleClass, 1);
 				}
-				
-					particle.orientation = Random.variation(0, 180);
 					
 					particle.initScale   = Random.variation(particleScale,
 															particleScaleVariation);
@@ -149,6 +150,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					particle.life  = particle.initLife;
 					
 					particle.draw(particleData);
+					
+					particle.canvas.blendMode = blendMode;
 					
 					particlesPosition.setUpParticle(particle);
 					
