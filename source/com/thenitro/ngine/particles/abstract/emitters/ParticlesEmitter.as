@@ -17,7 +17,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		public static const VERSION:String = '1.0.1';
 		
 		public var emissionRate:Number;
-		public var emissionTime:Number;
+		public var emissionTime:Number = Number.MAX_VALUE;
 		
 		public var particleLife:Number;
 		public var particleLifeVariation:Number;
@@ -70,6 +70,10 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		
 		override public function get reflection():Class {
 			return ParticlesEmitter;
+		};
+		
+		public function set expired(pValue:Boolean):void {
+			_expired = pValue;
 		};
 		
 		override public function update(pElapsed:Number):void {
@@ -187,10 +191,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			
 			_container.removeChild(pEvent.data.canvas);
 			
-			trace("ParticlesEmitter.expiredEventHandler(pEvent)", _manager.entities.count);
-			
 			if (_manager.entities.count == 1) {
-				
 				expire();
 			}
 		};

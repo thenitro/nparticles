@@ -1,6 +1,7 @@
 package com.thenitro.ngine.particles.abstract.loader {
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
 	
+	import flash.errors.IllegalOperationError;
 	import flash.utils.ByteArray;
 	
 	import starling.events.EventDispatcher;
@@ -21,6 +22,7 @@ package com.thenitro.ngine.particles.abstract.loader {
 			}
 			
 			if (pBytes.readUTF() != ParticlesEmitter.VERSION) {
+				throw new IllegalOperationError("EmitterParametersLoader.loadBytes: invalid version!");
 				return;
 			}
 			

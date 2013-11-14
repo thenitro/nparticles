@@ -11,6 +11,7 @@ package nparticles.editor {
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -28,6 +29,7 @@ package nparticles.editor {
 	
 	import starling.display.BlendMode;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
@@ -67,6 +69,7 @@ package nparticles.editor {
 		private var _blendMode:PickerList;
 		
 		private var _isDown:Boolean;
+		private var _downTime:int;
 		
 		public function Editor() {
 			super();
@@ -79,16 +82,18 @@ package nparticles.editor {
 			new AeonDesktopTheme();
 			
 			createBackground();
+			createWorkingZone();
 			createParticles();
 			createGUI();
 			
 			addEventListener(starling.events.Event.ENTER_FRAME, enterFrameEventHandler);
-			addEventListener(TouchEvent.TOUCH, touchEventHandler);
 		};
 		
 		private function enterFrameEventHandler(pEvent:EnterFrameEvent):void {
 			if (_emitter.expired) {
-				_emitter.emissionTime = 4.0;
+				trace("Editor.enterFrameEventHandler(pEvent)", _emissionTime.value);
+				_emitter.emissionTime = _emissionTime.value;
+				_emitter.expired      = false;
 			}
 			
 			_emitter.update(pEvent.passedTime);
@@ -196,6 +201,16 @@ package nparticles.editor {
 		};
 		
 		private function createBackground():void {
+			var workingZone:Sprite = new Sprite();
+				workingZone.addChild(new Quad(stage.stageWidth - 100, stage.stageHeight - 20, Random.color));
+				workingZone.alpha = 0;
+				
+			addChild(workingZone);
+			
+			workingZone.addEventListener(TouchEvent.TOUCH, touchEventHandler);
+		};
+		
+		private function createWorkingZone():void {
 			_background = new Sprite();
 			
 			addChild(_background);
@@ -275,7 +290,7 @@ package nparticles.editor {
 		};
 		
 		private function emissionTimeChangeEventHandler(pEvent:starling.events.Event):void {
-			_emitter.emissionTime = (pEvent.target as NumericStepper).value;
+			
 		};
 		
 		private function particleLifeChangeEventHandler(pEvent:starling.events.Event):void {
@@ -479,6 +494,7 @@ package nparticles.editor {
 			switch(touch.phase) {
 				case TouchPhase.BEGAN: {
 					_isDown = true;
+					_downTime = getTimer();
 					
 					break;
 				}
@@ -496,6 +512,17 @@ package nparticles.editor {
 					
 				case TouchPhase.ENDED: {
 					_isDown = false;
+					
+					var diff:int = getTimer() - _downTime;
+					
+					if (diff < 150) {
+						_emitter.position.x = touch.globalX;
+						_emitter.position.y = touch.globalY;
+						
+						_emitter.expire();
+						
+						_emitter.emissionTime = _emissionTime.value;
+					}
 					
 					break;
 				}
