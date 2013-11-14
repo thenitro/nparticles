@@ -255,9 +255,9 @@ package nparticles.editor {
 		private function createParametersContainer():void {
 			_parameters = new ScrollContainer();
 			
-			_parameters.x = stage.stageWidth - 100;
+			_parameters.x = stage.stageWidth - 115;
 			
-			_parameters.width  = 100;
+			_parameters.width  = 115;
 			_parameters.height = stage.stageHeight;
 			
 			_parameters.layout = new VerticalLayout();
