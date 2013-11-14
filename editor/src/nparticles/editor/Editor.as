@@ -5,6 +5,13 @@ package nparticles.editor {
 	import com.thenitro.ngine.particles.abstract.particles.ImageParticle;
 	import com.thenitro.ngine.particles.abstract.particles.QuadParticle;
 	
+	import flash.display.Bitmap;
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.net.FileFilter;
+	import flash.net.FileReference;
+	import flash.utils.ByteArray;
+	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.NumericStepper;
@@ -14,13 +21,6 @@ package nparticles.editor {
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.themes.AeonDesktopTheme;
-	
-	import flash.display.Bitmap;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.net.FileFilter;
-	import flash.net.FileReference;
-	import flash.utils.ByteArray;
 	
 	import ngine.math.Geometry;
 	import ngine.math.Random;
@@ -45,6 +45,7 @@ package nparticles.editor {
 		private var _background:Sprite;
 		
 		private var _emissionRate:NumericStepper;
+		private var _emissionTime:NumericStepper;
 		
 		private var _particleLife:NumericStepper;
 		private var _particleLifeVariation:NumericStepper;
@@ -86,16 +87,21 @@ package nparticles.editor {
 		};
 		
 		private function enterFrameEventHandler(pEvent:EnterFrameEvent):void {
+			if (_emitter.expired) {
+				_emitter.emissionTime = 4.0;
+			}
+			
 			_emitter.update(pEvent.passedTime);
 		};
 		
-		private function createParticles():void {
+		private function createParticles():void {			
 			_emitter = new ParticlesEmitter();
 			
 			_emitter.position.x = stage.stageWidth / 2;
 			_emitter.position.y = stage.stageHeight / 2;
 			
 			_emitter.emissionRate = 1.0;
+			_emitter.emissionTime = 4.0;
 			
 			_emitter.particleLife = 8.0;
 			_emitter.particleLifeVariation = 1.0;
@@ -138,6 +144,7 @@ package nparticles.editor {
 			createButton("Load", 	   loadButtonTriggeredEventHandler);
 			
 			_emissionRate = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
+			_emissionTime = createStepper("Emission time",  2.0, 0.05, emissionTimeChangeEventHandler);
 			
 			_particleLife = createStepper("Particle life",  8.0, 0.1, particleLifeChangeEventHandler);
 			_particleLifeVariation = createStepper("Life variation", 4.0, 0.1, particleLifeVariationChangeEventHandler);
@@ -265,6 +272,10 @@ package nparticles.editor {
 		
 		private function emissionRateChangeEventHandler(pEvent:starling.events.Event):void {
 			_emitter.emissionRate = (pEvent.target as NumericStepper).value;
+		};
+		
+		private function emissionTimeChangeEventHandler(pEvent:starling.events.Event):void {
+			_emitter.emissionTime = (pEvent.target as NumericStepper).value;
 		};
 		
 		private function particleLifeChangeEventHandler(pEvent:starling.events.Event):void {
@@ -427,6 +438,7 @@ package nparticles.editor {
 						loader.loadBytes(file.data, _emitter);
 						
 					_emissionRate.value = _emitter.emissionRate;
+					_emissionTime.value = _emitter.emissionTime;
 					
 					_particleLife.value = _emitter.particleLife;
 					_particleLifeVariation.value = _emitter.particleLifeVariation;
@@ -463,8 +475,6 @@ package nparticles.editor {
 			if (!touch) {
 				return;
 			}
-			
-			trace("Editor.touchEventHandler(pEvent)", touch.phase);
 			
 			switch(touch.phase) {
 				case TouchPhase.BEGAN: {

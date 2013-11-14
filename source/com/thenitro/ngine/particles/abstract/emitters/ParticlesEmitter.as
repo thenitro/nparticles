@@ -14,9 +14,10 @@ package com.thenitro.ngine.particles.abstract.emitters {
 	import starling.events.Event;
 	
 	public class ParticlesEmitter extends Entity implements IReusable {
-		public static const VERSION:String = '1.0.0';
+		public static const VERSION:String = '1.0.1';
 		
 		public var emissionRate:Number;
+		public var emissionTime:Number;
 		
 		public var particleLife:Number;
 		public var particleLifeVariation:Number;
@@ -73,13 +74,19 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		
 		override public function update(pElapsed:Number):void {
 			if (particlesExpire) {
-				particlesExpire.update();
+				particlesExpire.update(pElapsed);
 			}
 			
 			_position.x += _velocity.x;
 			_position.y += _velocity.y;
 			
 			_manager.update(pElapsed);
+			
+			emissionTime -= pElapsed;
+			
+			if (emissionTime <= 0) {
+				return;
+			}
 			
 			if (emissionRate >= 1) {
 				createParticles(emissionRate);
@@ -179,6 +186,13 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			}
 			
 			_container.removeChild(pEvent.data.canvas);
+			
+			trace("ParticlesEmitter.expiredEventHandler(pEvent)", _manager.entities.count);
+			
+			if (_manager.entities.count == 1) {
+				
+				expire();
+			}
 		};
 	};
 }
