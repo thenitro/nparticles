@@ -72,6 +72,10 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_framesPerParticle = 0;
 		};
 		
+		override public function get reflection():Class {
+			return ParticlesEmitter;
+		};
+		
 		public function get emissionTime():Number {
 			return _emissionTime;
 		};
@@ -82,10 +86,6 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			} else {
 				_emissionTime = pValue;
 			}
-		};
-
-		override public function get reflection():Class {
-			return ParticlesEmitter;
 		};
 		
 		public function set expired(pValue:Boolean):void {
@@ -144,19 +144,18 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			particlesExpire   = null;
 		};
 		
-		public function prewarm(pTime:Number, pFPS:Number):void {
+		public function prewarm(pTime:Number, pFPS:Number):void {			
 			var iterations:Number = pTime * pFPS;
-			
-			trace("ParticlesEmitter.prewarm(pTime, pFPS)", iterations);
-			trace("ParticlesEmitter.prewarm(pTime, pFPS)", pTime / pFPS);
-			
-			
 			
 			for (var i:int = 0; i < iterations; i++) {
 				generateNewParticles();
 				
 				_manager.update(pTime / pFPS);
 			}
+		};
+		
+		public function clean():void {
+			_manager.clean();
 		};
 		
 		private function generateNewParticles():void {

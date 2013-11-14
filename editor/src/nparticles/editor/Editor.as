@@ -551,6 +551,8 @@ package nparticles.editor {
 					var diff:int = getTimer() - _downTime;
 					
 					if (diff < 150) {
+						_emitter.clean();
+						
 						_emitter.position.x = touch.globalX;
 						_emitter.position.y = touch.globalY;
 						
