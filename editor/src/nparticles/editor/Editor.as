@@ -47,6 +47,7 @@ package nparticles.editor {
 		private var _background:Sprite;
 		
 		private var _emissionRate:NumericStepper;
+		private var _emissionDelay:NumericStepper;
 		private var _emissionTime:NumericStepper;
 		
 		private var _particleLife:NumericStepper;
@@ -91,8 +92,9 @@ package nparticles.editor {
 		
 		private function enterFrameEventHandler(pEvent:EnterFrameEvent):void {
 			if (_emitter.expired) {
-				trace("Editor.enterFrameEventHandler(pEvent)", _emissionTime.value);
-				_emitter.emissionTime = _emissionTime.value;
+				_emitter.emissionTime  = _emissionTime.value;
+				_emitter.emissionDelay = _emissionDelay.value;
+				
 				_emitter.expired      = false;
 			}
 			
@@ -105,8 +107,9 @@ package nparticles.editor {
 			_emitter.position.x = stage.stageWidth / 2;
 			_emitter.position.y = stage.stageHeight / 2;
 			
-			_emitter.emissionRate = 1.0;
-			_emitter.emissionTime = 4.0;
+			_emitter.emissionRate  = 1.0;
+			_emitter.emissionDelay = 1.0;
+			_emitter.emissionTime  = 4.0;
 			
 			_emitter.particleLife = 8.0;
 			_emitter.particleLifeVariation = 1.0;
@@ -148,8 +151,9 @@ package nparticles.editor {
 			createButton("Save", 	   saveButtonTriggeredEventHandler);
 			createButton("Load", 	   loadButtonTriggeredEventHandler);
 			
-			_emissionRate = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
-			_emissionTime = createStepper("Emission time",  2.0, 0.05, emissionTimeChangeEventHandler);
+			_emissionRate  = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
+			_emissionDelay = createStepper("Emission delay", 1.0, 0.05, emissionDelayChangeEventHandler);
+			_emissionTime  = createStepper("Emission time",  4.0, 0.05, emissionTimeChangeEventHandler);
 			
 			_particleLife = createStepper("Particle life",  8.0, 0.1, particleLifeChangeEventHandler);
 			_particleLifeVariation = createStepper("Life variation", 4.0, 0.1, particleLifeVariationChangeEventHandler);
@@ -289,6 +293,10 @@ package nparticles.editor {
 			_emitter.emissionRate = (pEvent.target as NumericStepper).value;
 		};
 		
+		private function emissionDelayChangeEventHandler(pEvent:starling.events.Event):void {
+			
+		};
+		
 		private function emissionTimeChangeEventHandler(pEvent:starling.events.Event):void {
 			
 		};
@@ -415,6 +423,8 @@ package nparticles.editor {
 				output.writeUTF(ParticlesEmitter.VERSION);
 				
 				output.writeDouble(_emitter.emissionRate);
+				output.writeDouble(_emitter.emissionDelay);
+				output.writeDouble(_emitter.emissionTime);
 				
 				output.writeDouble(_emitter.particleLife);
 				output.writeDouble(_emitter.particleLifeVariation);
@@ -452,8 +462,9 @@ package nparticles.editor {
 					var loader:EmitterParametersLoader = new EmitterParametersLoader();	
 						loader.loadBytes(file.data, _emitter);
 						
-					_emissionRate.value = _emitter.emissionRate;
-					_emissionTime.value = _emitter.emissionTime;
+					_emissionRate.value  = _emitter.emissionRate;
+					_emissionDelay.value = _emitter.emissionDelay;
+					_emissionTime.value  = _emitter.emissionTime;
 					
 					_particleLife.value = _emitter.particleLife;
 					_particleLifeVariation.value = _emitter.particleLifeVariation;
@@ -521,7 +532,8 @@ package nparticles.editor {
 						
 						_emitter.expire();
 						
-						_emitter.emissionTime = _emissionTime.value;
+						_emitter.emissionDelay = _emissionDelay.value;
+						_emitter.emissionTime  = _emissionTime.value;
 					}
 					
 					break;

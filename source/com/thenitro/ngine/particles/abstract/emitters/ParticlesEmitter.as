@@ -14,10 +14,10 @@ package com.thenitro.ngine.particles.abstract.emitters {
 	import starling.events.Event;
 	
 	public class ParticlesEmitter extends Entity implements IReusable {
-		public static const VERSION:String = '1.0.1';
+		public static const VERSION:String = '1.0.2';
 		
 		public var emissionRate:Number;
-		public var emissionTime:Number = Number.MAX_VALUE;
+		public var emissionDelay:Number;
 		
 		public var particleLife:Number;
 		public var particleLifeVariation:Number;
@@ -45,6 +45,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		
 		public var blendMode:String = BlendMode.AUTO;
 		
+		private var _emissionTime:Number;
+		
 		private var _container:Sprite;
 		private var _manager:EntityManager;
 		
@@ -68,6 +70,18 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_framesPerParticle = 0;
 		};
 		
+		public function get emissionTime():Number {
+			return _emissionTime;
+		};
+
+		public function set emissionTime(pValue:Number):void {
+			if (_emissionTime < 0) {
+				_emissionTime = Number.MAX_VALUE;
+			} else {
+				_emissionTime = pValue;
+			}
+		};
+
 		override public function get reflection():Class {
 			return ParticlesEmitter;
 		};
@@ -76,7 +90,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_expired = pValue;
 		};
 		
-		override public function update(pElapsed:Number):void {
+		override public function update(pElapsed:Number):void {			
 			if (particlesExpire) {
 				particlesExpire.update(pElapsed);
 			}
@@ -85,6 +99,12 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_position.y += _velocity.y;
 			
 			_manager.update(pElapsed);
+			
+			emissionDelay -= pElapsed;
+			
+			if (emissionDelay > 0) {
+				return;
+			}
 			
 			emissionTime -= pElapsed;
 			

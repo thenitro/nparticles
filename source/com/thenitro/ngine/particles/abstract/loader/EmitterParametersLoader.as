@@ -26,8 +26,9 @@ package com.thenitro.ngine.particles.abstract.loader {
 				return;
 			}
 			
-			pTarget.emissionRate = pBytes.readDouble();
-			pTarget.emissionTime = pBytes.readDouble();
+			pTarget.emissionRate  = pBytes.readDouble();
+			pTarget.emissionDelay = pBytes.readDouble();
+			pTarget.emissionTime  = pBytes.readDouble();
 			
 			pTarget.particleLife = pBytes.readDouble();
 			pTarget.particleLifeVariation = pBytes.readDouble();
