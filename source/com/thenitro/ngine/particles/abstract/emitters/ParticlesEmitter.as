@@ -14,9 +14,11 @@ package com.thenitro.ngine.particles.abstract.emitters {
 	import starling.events.Event;
 	
 	public class ParticlesEmitter extends Entity implements IReusable {
-		public static const VERSION:String = '1.0.2';
+		public static const VERSION:String = '1.0.3';
 		
 		public var emissionRate:Number;
+		public var emissionRateVariation:Number;
+		
 		public var emissionDelay:Number;
 		
 		public var particleLife:Number;
@@ -106,25 +108,13 @@ package com.thenitro.ngine.particles.abstract.emitters {
 				return;
 			}
 			
-			emissionTime -= pElapsed;
+			_emissionTime -= pElapsed;
 			
-			if (emissionTime <= 0) {
+			if (_emissionTime <= 0) {
 				return;
 			}
 			
-			if (emissionRate >= 1) {
-				createParticles(emissionRate);
-			} else {
-				if (emissionRate < 1) {
-					_framesPerParticle += emissionRate;
-					
-					if (_framesPerParticle > 1) {
-						createParticles(1);
-						
-						_framesPerParticle = 0;
-					}
-				}
-			}
+			generateNewParticles();
 		};
 		
 		override public function poolPrepare():void {
@@ -152,6 +142,37 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			
 			particlesPosition = null;
 			particlesExpire   = null;
+		};
+		
+		public function prewarm(pTime:Number, pFPS:Number):void {
+			var iterations:Number = pTime * pFPS;
+			
+			trace("ParticlesEmitter.prewarm(pTime, pFPS)", iterations);
+			trace("ParticlesEmitter.prewarm(pTime, pFPS)", pTime / pFPS);
+			
+			
+			
+			for (var i:int = 0; i < iterations; i++) {
+				generateNewParticles();
+				
+				_manager.update(pTime / pFPS);
+			}
+		};
+		
+		private function generateNewParticles():void {
+			if (emissionRate >= 1) {
+				createParticles(Random.variation(emissionRate, emissionRateVariation));
+			} else {
+				if (emissionRate < 1) {
+					_framesPerParticle += Random.variation(emissionRate, emissionRateVariation);
+					
+					if (_framesPerParticle > 1) {
+						createParticles(1);
+						
+						_framesPerParticle = 0;
+					}
+				}
+			}
 		};
 		
 		private function createParticles(pNumParticles:uint):void {

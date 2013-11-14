@@ -47,6 +47,8 @@ package nparticles.editor {
 		private var _background:Sprite;
 		
 		private var _emissionRate:NumericStepper;
+		private var _emissionRateVariation:NumericStepper;
+		
 		private var _emissionDelay:NumericStepper;
 		private var _emissionTime:NumericStepper;
 		
@@ -107,7 +109,9 @@ package nparticles.editor {
 			_emitter.position.x = stage.stageWidth / 2;
 			_emitter.position.y = stage.stageHeight / 2;
 			
-			_emitter.emissionRate  = 1.0;
+			_emitter.emissionRate = 1.0;
+			_emitter.emissionRateVariation = 0.5;
+			
 			_emitter.emissionDelay = 1.0;
 			_emitter.emissionTime  = 4.0;
 			
@@ -140,6 +144,8 @@ package nparticles.editor {
 			_emitter.particlesPosition = position;
 			
 			addChild(_emitter.canvas);
+			
+			_emitter.prewarm(0.5, 60);
 		};
 		
 		private function createGUI():void {
@@ -151,7 +157,9 @@ package nparticles.editor {
 			createButton("Save", 	   saveButtonTriggeredEventHandler);
 			createButton("Load", 	   loadButtonTriggeredEventHandler);
 			
-			_emissionRate  = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
+			_emissionRate 		   = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
+			_emissionRateVariation = createStepper("Rate variation", 0.5, 0.05, emissionRateVariationChangeEventHandler);
+			
 			_emissionDelay = createStepper("Emission delay", 1.0, 0.05, emissionDelayChangeEventHandler);
 			_emissionTime  = createStepper("Emission time",  4.0, 0.05, emissionTimeChangeEventHandler);
 			
@@ -293,6 +301,10 @@ package nparticles.editor {
 			_emitter.emissionRate = (pEvent.target as NumericStepper).value;
 		};
 		
+		private function emissionRateVariationChangeEventHandler(pEvent:starling.events.Event):void {
+			_emitter.emissionRateVariation = (pEvent.target as NumericStepper).value;
+		};
+		
 		private function emissionDelayChangeEventHandler(pEvent:starling.events.Event):void {
 			
 		};
@@ -423,6 +435,8 @@ package nparticles.editor {
 				output.writeUTF(ParticlesEmitter.VERSION);
 				
 				output.writeDouble(_emitter.emissionRate);
+				output.writeDouble(_emitter.emissionRateVariation);
+				
 				output.writeDouble(_emitter.emissionDelay);
 				output.writeDouble(_emitter.emissionTime);
 				
@@ -462,7 +476,9 @@ package nparticles.editor {
 					var loader:EmitterParametersLoader = new EmitterParametersLoader();	
 						loader.loadBytes(file.data, _emitter);
 						
-					_emissionRate.value  = _emitter.emissionRate;
+					_emissionRate.value  		 = _emitter.emissionRate;
+					_emissionRateVariation.value = _emitter.emissionRateVariation;
+					
 					_emissionDelay.value = _emitter.emissionDelay;
 					_emissionTime.value  = _emitter.emissionTime;
 					
