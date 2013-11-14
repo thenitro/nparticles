@@ -150,7 +150,11 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			particlesExpire   = null;
 		};
 		
-		public function prewarm(pTime:Number, pFPS:Number):void {			
+		public function prewarm(pTime:Number, pFPS:Number):void {		
+			if (pTime == 0) {
+				return;
+			}
+			
 			var iterations:Number = pTime * pFPS;
 			
 			for (var i:int = 0; i < iterations; i++) {

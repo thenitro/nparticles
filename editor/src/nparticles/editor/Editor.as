@@ -46,6 +46,8 @@ package nparticles.editor {
 		
 		private var _background:Sprite;
 		
+		private var _prewarm:NumericStepper;
+		
 		private var _emissionRate:NumericStepper;
 		private var _emissionRateVariation:NumericStepper;
 		
@@ -105,7 +107,7 @@ package nparticles.editor {
 				_emitter.emissionTime  = _emissionTime.value;
 				_emitter.emissionDelay = _emissionDelay.value;
 				
-				_emitter.prewarm(1.0, 60);
+				_emitter.prewarm(_prewarm.value, 60);
 			}
 			
 			_emitter.update(pEvent.passedTime);
@@ -171,7 +173,7 @@ package nparticles.editor {
 			createButton("Save", 	   saveButtonTriggeredEventHandler);
 			createButton("Load", 	   loadButtonTriggeredEventHandler);
 			
-			createStepper("Prewarm", 1.0, 0.05, emissionPrewarmChangeEventHandler);
+			_prewarm = createStepper("Prewarm", 1.0, 0.05, emissionPrewarmChangeEventHandler);
 			
 			_emissionRate 		   = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
 			_emissionRateVariation = createStepper("Rate variation", 0.5, 0.05, emissionRateVariationChangeEventHandler);
@@ -607,7 +609,7 @@ package nparticles.editor {
 						_emitter.emissionDelay = _emissionDelay.value;
 						_emitter.emissionTime  = _emissionTime.value;
 						
-						_emitter.prewarm(1.0, 60);
+						_emitter.prewarm(_prewarm.value, 60);
 					}
 					
 					break;
