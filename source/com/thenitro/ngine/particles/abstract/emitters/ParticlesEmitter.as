@@ -14,7 +14,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 	import starling.events.Event;
 	
 	public class ParticlesEmitter extends Entity implements IReusable {
-		public static const VERSION:String = '1.0.3';
+		public static const VERSION:String = '1.0.5';
 		
 		public var emissionRate:Number;
 		public var emissionRateVariation:Number;
@@ -29,6 +29,12 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		
 		public var particleGrowRatio:Number;
 		public var particleShrinkRatio:Number;
+		
+		public var particleAlpha:Number;
+		public var particleAlphaVariation:Number;
+		
+		public var particleAlphaGrowRatio:Number;
+		public var particleAlphaShrinkRatio:Number;
 		
 		public var particleSpeed:Number;
 		public var particleSpeedVariation:Number;
@@ -183,16 +189,24 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					_pool.allocate(ParticleClass, 1);
 				}
 					
-					particle.initScale   = Random.variation(particleScale,
-															particleScaleVariation);
+					particle.initScale = Random.variation(particleScale,
+										     			  particleScaleVariation);
 					
 					particle.scale = particle.initScale;
+					
+					particle.growTime   = particleGrowRatio   * particle.initLife;
+					particle.shrinkTime = particleShrinkRatio * particle.initLife;
+					
+					particle.initAlpha = Random.variation(particleAlpha,
+										     			  particleAlphaVariation);
+					
+					particle.alpha = particle.initAlpha;
 					
 					particle.initLife = Random.variation(particleLife,
 														 particleLifeVariation);
 					
-					particle.growTime   = particleGrowRatio   * particle.initLife;
-					particle.shrinkTime = particleShrinkRatio * particle.initLife;
+					particle.alphaGrowTime   = particleAlphaGrowRatio   * particle.initLife;
+					particle.alphaShrinkTime = particleAlphaShrinkRatio * particle.initLife;
 					
 					particle.velocity.fromAngle(Random.variation(direction, 
 																 directionVariation), 

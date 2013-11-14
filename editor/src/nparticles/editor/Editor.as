@@ -61,6 +61,12 @@ package nparticles.editor {
 		private var _particleGrowRatio:NumericStepper;
 		private var _particleShrinkRatio:NumericStepper;
 		
+		private var _particleAlpha:NumericStepper;
+		private var _particleAlphaVariation:NumericStepper;
+		
+		private var _particleAlphaGrowRatio:NumericStepper;
+		private var _particleAlphaShrinkRatio:NumericStepper;
+		
 		private var _particleSpeed:NumericStepper;
 		private var _particleSpeedVariation:NumericStepper;
 		
@@ -114,7 +120,7 @@ package nparticles.editor {
 			_emitter.emissionRate = 1.0;
 			_emitter.emissionRateVariation = 0.5;
 			
-			_emitter.emissionDelay = 1.0;
+			_emitter.emissionDelay = 0.0;
 			_emitter.emissionTime  = 4.0;
 			
 			_emitter.particleLife = 8.0;
@@ -125,6 +131,12 @@ package nparticles.editor {
 			
 			_emitter.particleGrowRatio   = 0.3;
 			_emitter.particleShrinkRatio = 0.5;
+			
+			_emitter.particleAlpha = 0.5;
+			_emitter.particleAlphaVariation = 0.3;
+			
+			_emitter.particleAlphaGrowRatio   = 0.3;
+			_emitter.particleAlphaShrinkRatio = 0.5;
 			
 			_emitter.particleSpeed = -75;
 			_emitter.particleSpeedVariation = 25;
@@ -164,7 +176,7 @@ package nparticles.editor {
 			_emissionRate 		   = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
 			_emissionRateVariation = createStepper("Rate variation", 0.5, 0.05, emissionRateVariationChangeEventHandler);
 			
-			_emissionDelay = createStepper("Emission delay", 1.0, 0.05, emissionDelayChangeEventHandler);
+			_emissionDelay = createStepper("Emission delay", 0.0, 0.05, emissionDelayChangeEventHandler);
 			_emissionTime  = createStepper("Emission time",  4.0, 0.05, emissionTimeChangeEventHandler);
 			
 			_particleLife = createStepper("Particle life",  8.0, 0.1, particleLifeChangeEventHandler);
@@ -175,6 +187,12 @@ package nparticles.editor {
 			
 			_particleGrowRatio = createStepper("Pt Grow ratio",   0.3, 0.05, particleGrowRatioChangeEventHandler);
 			_particleShrinkRatio = createStepper("Pt Shrink ratio", 0.5, 0.05, particleShrinkRatioChangeEventHandler);
+			
+			_particleAlpha = createStepper("Particle alpha",  1.0, 0.05, particleAlphaChangeEventHandler);
+			_particleAlphaVariation = createStepper("Alpha variation", 0.2, 0.01, particleAlphaVariationChangeEventHandler);
+			
+			_particleAlphaGrowRatio = createStepper("Pt Alpha Grow",   0.3, 0.05, particleAlphaGrowRatioChangeEventHandler);
+			_particleAlphaShrinkRatio = createStepper("Pt Alpha Shrink", 0.5, 0.05, particleAlphaShrinkRatioChangeEventHandler);
 			
 			_particleSpeed = createStepper("Particle speed",  -75, 1, particleSpeedChangeEventHandler);
 			_particleSpeedVariation = createStepper("Speed variation", 25, 1, particleSpeedVariationChangeEventHandler);
@@ -345,6 +363,22 @@ package nparticles.editor {
 			_emitter.particleShrinkRatio = (pEvent.target as NumericStepper).value;
 		};
 		
+		private function particleAlphaChangeEventHandler(pEvent:starling.events.Event):void {
+			_emitter.particleAlpha = (pEvent.target as NumericStepper).value;
+		};
+		
+		private function particleAlphaVariationChangeEventHandler(pEvent:starling.events.Event):void {
+			_emitter.particleAlphaVariation = (pEvent.target as NumericStepper).value;
+		};
+		
+		private function particleAlphaGrowRatioChangeEventHandler(pEvent:starling.events.Event):void {
+			_emitter.particleAlphaGrowRatio = (pEvent.target as NumericStepper).value;
+		};
+		
+		private function particleAlphaShrinkRatioChangeEventHandler(pEvent:starling.events.Event):void {
+			_emitter.particleAlphaShrinkRatio = (pEvent.target as NumericStepper).value;
+		};
+		
 		private function particleSpeedChangeEventHandler(pEvent:starling.events.Event):void {
 			_emitter.particleSpeed = (pEvent.target as NumericStepper).value;
 		};
@@ -457,6 +491,12 @@ package nparticles.editor {
 				output.writeDouble(_emitter.particleGrowRatio);
 				output.writeDouble(_emitter.particleShrinkRatio);
 				
+				output.writeDouble(_emitter.particleAlpha);
+				output.writeDouble(_emitter.particleAlphaVariation);
+				
+				output.writeDouble(_emitter.particleAlphaGrowRatio);
+				output.writeDouble(_emitter.particleAlphaShrinkRatio);
+				
 				output.writeDouble(_emitter.particleSpeed);
 				output.writeDouble(_emitter.particleSpeedVariation);
 				
@@ -498,6 +538,12 @@ package nparticles.editor {
 					
 					_particleGrowRatio.value = _emitter.particleGrowRatio;
 					_particleShrinkRatio.value = _emitter.particleShrinkRatio;
+					
+					_particleAlpha.value = _emitter.particleAlpha;
+					_particleAlphaVariation.value = _emitter.particleAlphaVariation;
+					
+					_particleAlphaGrowRatio.value = _emitter.particleAlphaGrowRatio;
+					_particleAlphaShrinkRatio.value = _emitter.particleAlphaShrinkRatio;
 					
 					_particleSpeed.value = _emitter.particleSpeed;
 					_particleSpeedVariation.value = _emitter.particleSpeedVariation;

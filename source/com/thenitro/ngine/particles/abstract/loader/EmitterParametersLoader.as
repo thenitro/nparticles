@@ -41,6 +41,12 @@ package com.thenitro.ngine.particles.abstract.loader {
 			pTarget.particleGrowRatio = pBytes.readDouble();
 			pTarget.particleShrinkRatio = pBytes.readDouble();
 			
+			pTarget.particleAlpha = pBytes.readDouble();
+			pTarget.particleAlphaVariation = pBytes.readDouble();
+			
+			pTarget.particleAlphaGrowRatio = pBytes.readDouble();
+			pTarget.particleAlphaShrinkRatio = pBytes.readDouble();
+			
 			pTarget.particleSpeed = pBytes.readDouble();
 			pTarget.particleSpeedVariation = pBytes.readDouble();
 			
