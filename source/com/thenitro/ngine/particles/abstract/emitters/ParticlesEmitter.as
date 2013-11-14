@@ -87,7 +87,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		};
 
 		public function set emissionTime(pValue:Number):void {
-			if (_emissionTime < 0) {
+			if (pValue < 0) {
 				_emissionTime = Number.MAX_VALUE;
 			} else {
 				_emissionTime = pValue;
