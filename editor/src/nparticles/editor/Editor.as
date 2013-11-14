@@ -100,16 +100,7 @@ package nparticles.editor {
 			addEventListener(starling.events.Event.ENTER_FRAME, enterFrameEventHandler);
 		};
 		
-		private function enterFrameEventHandler(pEvent:EnterFrameEvent):void {
-			if (_emitter.expired) {
-				_emitter.expired      = false;
-				
-				_emitter.emissionTime  = _emissionTime.value;
-				_emitter.emissionDelay = _emissionDelay.value;
-				
-				_emitter.prewarm(_prewarm.value, 60);
-			}
-			
+		private function enterFrameEventHandler(pEvent:EnterFrameEvent):void {			
 			_emitter.update(pEvent.passedTime);
 		};
 		
