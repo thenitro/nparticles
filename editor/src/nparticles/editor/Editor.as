@@ -94,10 +94,12 @@ package nparticles.editor {
 		
 		private function enterFrameEventHandler(pEvent:EnterFrameEvent):void {
 			if (_emitter.expired) {
+				_emitter.expired      = false;
+				
 				_emitter.emissionTime  = _emissionTime.value;
 				_emitter.emissionDelay = _emissionDelay.value;
 				
-				_emitter.expired      = false;
+				_emitter.prewarm(1.0, 60);
 			}
 			
 			_emitter.update(pEvent.passedTime);
@@ -145,7 +147,7 @@ package nparticles.editor {
 			
 			addChild(_emitter.canvas);
 			
-			_emitter.prewarm(0.5, 60);
+			_emitter.prewarm(1.0, 60);
 		};
 		
 		private function createGUI():void {
@@ -156,6 +158,8 @@ package nparticles.editor {
 			createButton("Particle",   particleButtonTriggeredEventHandler);
 			createButton("Save", 	   saveButtonTriggeredEventHandler);
 			createButton("Load", 	   loadButtonTriggeredEventHandler);
+			
+			createStepper("Prewarm", 1.0, 0.05, emissionPrewarmChangeEventHandler);
 			
 			_emissionRate 		   = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
 			_emissionRateVariation = createStepper("Rate variation", 0.5, 0.05, emissionRateVariationChangeEventHandler);
@@ -295,6 +299,10 @@ package nparticles.editor {
 			_parameters.addChild(stepper);
 			
 			return stepper;
+		};
+		
+		private function emissionPrewarmChangeEventHandler(pEvent:starling.events.Event):void {
+			
 		};
 		
 		private function emissionRateChangeEventHandler(pEvent:starling.events.Event):void {
@@ -550,6 +558,8 @@ package nparticles.editor {
 						
 						_emitter.emissionDelay = _emissionDelay.value;
 						_emitter.emissionTime  = _emissionTime.value;
+						
+						_emitter.prewarm(1.0, 60);
 					}
 					
 					break;
