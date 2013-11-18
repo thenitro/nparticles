@@ -38,6 +38,7 @@ package nparticles.editor {
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	import starling.utils.deg2rad;
+	import starling.utils.rad2deg;
 	
 	public final class Editor extends Sprite {
 		private var _emitter:ParticlesEmitter;
@@ -542,10 +543,10 @@ package nparticles.editor {
 					_particleSpeed.value = _emitter.particleSpeed;
 					_particleSpeedVariation.value = _emitter.particleSpeedVariation;
 					
-					_particleOmegaVariation.value = _emitter.particleOmegaVariation;
+					_particleOmegaVariation.value = rad2deg(_emitter.particleOmegaVariation);
 					
-					_direction.value = _emitter.direction;
-					_directionVariation.value = _emitter.directionVariation;
+					_direction.value = rad2deg(_emitter.direction);
+					_directionVariation.value = rad2deg(_emitter.directionVariation);
 					
 					for each (var item:Object in _blendMode.dataProvider.data) {
 						if (_emitter.blendMode == item.text) {
