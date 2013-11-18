@@ -37,6 +37,7 @@ package nparticles.editor {
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
+	import starling.utils.deg2rad;
 	
 	public final class Editor extends Sprite {
 		private var _emitter:ParticlesEmitter;
@@ -190,10 +191,10 @@ package nparticles.editor {
 			_particleSpeed = createStepper("Particle speed",  -75, 1, particleSpeedChangeEventHandler);
 			_particleSpeedVariation = createStepper("Speed variation", 25, 1, particleSpeedVariationChangeEventHandler);
 			
-			_particleOmegaVariation = createStepper("Pt Omega variation", Math.PI / 128, Math.PI / 512, particleOmegaVariationChangeEventHandler);
+			_particleOmegaVariation = createStepper("Pt Omega variation", 1, 0.1, particleOmegaVariationChangeEventHandler);
 			
-			_direction = createStepper("Particle direction", Math.PI / 2, Math.PI / 32, particleDirectionChangeEventHandler);
-			_directionVariation = createStepper("Direction variation", Math.PI / 8, Math.PI / 32, particleDirectionVariationChangeEventHandler);
+			_direction = createStepper("Particle direction", 90, 1, particleDirectionChangeEventHandler);
+			_directionVariation = createStepper("Direction variation", 15, 1, particleDirectionVariationChangeEventHandler);
 			
 			createStepper("Emitter width", 20, 1, emitterWidthChangeEventHandler);
 			createStepper("Emitter height", 20, 1, emitterHeightChangeEventHandler);
@@ -228,19 +229,19 @@ package nparticles.editor {
 		};
 		
 		private function createBackground():void {
-			var workingZone:Sprite = new Sprite();
-				workingZone.addChild(new Quad(stage.stageWidth - 100, stage.stageHeight - 20, Random.color));
-				workingZone.alpha = 0;
-				
-			addChild(workingZone);
-			
-			workingZone.addEventListener(TouchEvent.TOUCH, touchEventHandler);
-		};
-		
-		private function createWorkingZone():void {
 			_background = new Sprite();
 			
 			addChild(_background);
+		};
+		
+		private function createWorkingZone():void {
+			var workingZone:Sprite = new Sprite();
+				workingZone.addChild(new Quad(stage.stageWidth - 100, stage.stageHeight - 20, Random.color));
+				workingZone.alpha = 0;
+			
+			addChild(workingZone);
+			
+			workingZone.addEventListener(TouchEvent.TOUCH, touchEventHandler);
 		};
 		
 		private function createParametersContainer():void {
@@ -381,15 +382,15 @@ package nparticles.editor {
 		};
 		
 		private function particleOmegaVariationChangeEventHandler(pEvent:starling.events.Event):void {
-			_emitter.particleOmegaVariation = (pEvent.target as NumericStepper).value;
+			_emitter.particleOmegaVariation = deg2rad((pEvent.target as NumericStepper).value);
 		};
 		
 		private function particleDirectionChangeEventHandler(pEvent:starling.events.Event):void {
-			_emitter.direction = (pEvent.target as NumericStepper).value;
+			_emitter.direction = deg2rad((pEvent.target as NumericStepper).value);
 		};
 		
 		private function particleDirectionVariationChangeEventHandler(pEvent:starling.events.Event):void {
-			_emitter.directionVariation = (pEvent.target as NumericStepper).value;
+			_emitter.directionVariation = deg2rad((pEvent.target as NumericStepper).value);
 		};
 		
 		private function positionXChangeEventHandler(pEvent:starling.events.Event):void {
