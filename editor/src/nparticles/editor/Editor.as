@@ -5,14 +5,6 @@ package nparticles.editor {
 	import com.thenitro.ngine.particles.abstract.particles.ImageParticle;
 	import com.thenitro.ngine.particles.abstract.particles.QuadParticle;
 	
-	import flash.display.Bitmap;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.net.FileFilter;
-	import flash.net.FileReference;
-	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
-	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.NumericStepper;
@@ -22,6 +14,14 @@ package nparticles.editor {
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.themes.AeonDesktopTheme;
+	
+	import flash.display.Bitmap;
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.net.FileFilter;
+	import flash.net.FileReference;
+	import flash.utils.ByteArray;
+	import flash.utils.getTimer;
 	
 	import ngine.math.Geometry;
 	import ngine.math.Random;
@@ -115,8 +115,8 @@ package nparticles.editor {
 			_emitter.emissionRate = 1.0;
 			_emitter.emissionRateVariation = 0.5;
 			
-			_emitter.emissionDelay = 0.0;
-			_emitter.emissionTime  = 4.0;
+			_emitter.emissionDelay =   0.0;
+			_emitter.emissionTime  = 100.0;
 			
 			_emitter.particleLife = 8.0;
 			_emitter.particleLifeVariation = 1.0;
@@ -168,34 +168,34 @@ package nparticles.editor {
 			
 			_prewarm = createStepper("Prewarm", 1.0, 0.05, emissionPrewarmChangeEventHandler);
 			
-			_emissionRate 		   = createStepper("Emission rate",  1.0, 0.05, emissionRateChangeEventHandler);
-			_emissionRateVariation = createStepper("Rate variation", 0.5, 0.05, emissionRateVariationChangeEventHandler);
+			_emissionRate 		   = createStepper("Emission rate",  _emitter.emissionRate, 0.05, emissionRateChangeEventHandler);
+			_emissionRateVariation = createStepper("Rate variation", _emitter.emissionRateVariation, 0.05, emissionRateVariationChangeEventHandler);
 			
-			_emissionDelay = createStepper("Emission delay", 0.0, 0.05, emissionDelayChangeEventHandler);
-			_emissionTime  = createStepper("Emission time",  4.0, 0.05, emissionTimeChangeEventHandler);
+			_emissionDelay = createStepper("Emission delay", _emitter.emissionDelay, 0.05, emissionDelayChangeEventHandler);
+			_emissionTime  = createStepper("Emission time",  _emitter.emissionTime, 0.05, emissionTimeChangeEventHandler);
 			
-			_particleLife = createStepper("Particle life",  8.0, 0.1, particleLifeChangeEventHandler);
-			_particleLifeVariation = createStepper("Life variation", 4.0, 0.1, particleLifeVariationChangeEventHandler);
+			_particleLife = createStepper("Particle life", _emitter.particleLife, 0.1, particleLifeChangeEventHandler);
+			_particleLifeVariation = createStepper("Life variation", _emitter.particleLifeVariation, 0.1, particleLifeVariationChangeEventHandler);
 			
-			_particleScale = createStepper("Particle scale",  1.0, 0.05, particleScaleChangeEventHandler);
-			_particleScaleVariation = createStepper("Scale variation", 0.2, 0.01, particleScaleVariationChangeEventHandler);
+			_particleScale = createStepper("Particle scale",  _emitter.particleScale, 0.05, particleScaleChangeEventHandler);
+			_particleScaleVariation = createStepper("Scale variation", _emitter.particleScaleVariation, 0.01, particleScaleVariationChangeEventHandler);
 			
-			_particleGrowRatio = createStepper("Pt Grow ratio",   0.3, 0.05, particleGrowRatioChangeEventHandler);
-			_particleShrinkRatio = createStepper("Pt Shrink ratio", 0.5, 0.05, particleShrinkRatioChangeEventHandler);
+			_particleGrowRatio = createStepper("Pt Grow ratio",   _emitter.particleGrowRatio, 0.05, particleGrowRatioChangeEventHandler);
+			_particleShrinkRatio = createStepper("Pt Shrink ratio", _emitter.particleShrinkRatio, 0.05, particleShrinkRatioChangeEventHandler);
 			
-			_particleAlpha = createStepper("Particle alpha",  1.0, 0.05, particleAlphaChangeEventHandler);
-			_particleAlphaVariation = createStepper("Alpha variation", 0.2, 0.01, particleAlphaVariationChangeEventHandler);
+			_particleAlpha = createStepper("Particle alpha",  _emitter.particleAlpha, 0.05, particleAlphaChangeEventHandler);
+			_particleAlphaVariation = createStepper("Alpha variation", _emitter.particleAlphaVariation, 0.01, particleAlphaVariationChangeEventHandler);
 			
-			_particleAlphaGrowRatio = createStepper("Pt Alpha Grow",   0.3, 0.05, particleAlphaGrowRatioChangeEventHandler);
-			_particleAlphaShrinkRatio = createStepper("Pt Alpha Shrink", 0.5, 0.05, particleAlphaShrinkRatioChangeEventHandler);
+			_particleAlphaGrowRatio = createStepper("Pt Alpha Grow",   _emitter.particleAlphaGrowRatio, 0.05, particleAlphaGrowRatioChangeEventHandler);
+			_particleAlphaShrinkRatio = createStepper("Pt Alpha Shrink", _emitter.particleAlphaShrinkRatio, 0.05, particleAlphaShrinkRatioChangeEventHandler);
 			
-			_particleSpeed = createStepper("Particle speed",  -75, 1, particleSpeedChangeEventHandler);
-			_particleSpeedVariation = createStepper("Speed variation", 25, 1, particleSpeedVariationChangeEventHandler);
+			_particleSpeed = createStepper("Particle speed",  _emitter.particleSpeed, 1, particleSpeedChangeEventHandler);
+			_particleSpeedVariation = createStepper("Speed variation", _emitter.particleSpeedVariation, 1, particleSpeedVariationChangeEventHandler);
 			
-			_particleOmegaVariation = createStepper("Pt Omega variation", 1, 0.1, particleOmegaVariationChangeEventHandler);
+			_particleOmegaVariation = createStepper("Pt Omega variation", rad2deg(_emitter.particleOmegaVariation), 0.1, particleOmegaVariationChangeEventHandler);
 			
-			_direction = createStepper("Particle direction", 90, 1, particleDirectionChangeEventHandler);
-			_directionVariation = createStepper("Direction variation", 15, 1, particleDirectionVariationChangeEventHandler);
+			_direction = createStepper("Particle direction", rad2deg(_emitter.direction), 1, particleDirectionChangeEventHandler);
+			_directionVariation = createStepper("Direction variation", rad2deg(_emitter.directionVariation), 1, particleDirectionVariationChangeEventHandler);
 			
 			createStepper("Emitter width", 20, 1, emitterWidthChangeEventHandler);
 			createStepper("Emitter height", 20, 1, emitterHeightChangeEventHandler);
@@ -300,8 +300,8 @@ package nparticles.editor {
 				stepper.width  = 100;
 				stepper.height =  20;
 				
-				stepper.minimum = -Number.MAX_VALUE;
-				stepper.maximum =  Number.MAX_VALUE;
+				stepper.minimum = -uint.MAX_VALUE;
+				stepper.maximum =  uint.MAX_VALUE;
 				
 				stepper.value = pInitValue;
 				

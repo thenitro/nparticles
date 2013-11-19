@@ -206,8 +206,10 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					
 					particle.alpha = particle.initAlpha;
 					
+					
 					particle.initLife = Random.variation(particleLife,
 														 particleLifeVariation);
+					
 					
 					particle.alphaGrowTime   = particleAlphaGrowRatio   * particle.initLife;
 					particle.alphaShrinkTime = particleAlphaShrinkRatio * particle.initLife;
