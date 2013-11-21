@@ -1,4 +1,4 @@
-package com.thenitro.ngine.particles.abstract {
+package com.thenitro.ngine.particles.abstract.particles {
 	import starling.display.Image;
 	import starling.textures.Texture;
 	
@@ -19,6 +19,8 @@ package com.thenitro.ngine.particles.abstract {
 			}
 			
 			_canvas = new Image(pTexure);
+			_canvas.pivotX = _canvas.width  / 2;
+			_canvas.pivotY = _canvas.height / 2;
 		};
 		
 		protected function needRedraw(pTexture:Texture):Boolean {

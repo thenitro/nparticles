@@ -1,4 +1,4 @@
-package com.thenitro.ngine.particles.abstract {
+package com.thenitro.ngine.particles.abstract.particles {
 	import ngine.core.Entity;
 	import ngine.math.TMath;
 	
@@ -6,13 +6,19 @@ package com.thenitro.ngine.particles.abstract {
 		public var initLife:Number;
 		public var life:Number;
 		
+		public var omega:Number;
+		
 		public var growTime:Number;
 		public var shrinkTime:Number;
 		
-		public var omega:Number;
-		
 		public var initScale:Number;
 		public var scale:Number;
+		
+		public var initAlpha:Number;
+		public var alpha:Number;
+		
+		public var alphaGrowTime:Number;
+		public var alphaShrinkTime:Number;
 		
 		public function Particle() {
 			super();
@@ -23,7 +29,7 @@ package com.thenitro.ngine.particles.abstract {
 		};
 		
 		override public function update(pElapsed:Number):void {
-			life -= 0.01;
+			life -= pElapsed;
 			
 			if (life <= 0) {
 				expire();
@@ -38,11 +44,20 @@ package com.thenitro.ngine.particles.abstract {
 				scale = initScale;
 			}
 			
+			if (life > initLife - alphaGrowTime) {
+				alpha = TMath.lerp(0.0, initAlpha, (initLife - life) / alphaGrowTime);
+			} else if (life < shrinkTime) {
+				alpha = TMath.lerp(initAlpha, 0.0, (alphaShrinkTime - life) / alphaShrinkTime);
+			} else {
+				alpha = initAlpha;
+			}
+			
 			_orientation += omega;
 				
 			super.update(pElapsed);
 			
 			_canvas.scaleX = _canvas.scaleY = scale;
+			_canvas.alpha  = alpha;
 		};
 		
 		public function draw(pData:*):void {

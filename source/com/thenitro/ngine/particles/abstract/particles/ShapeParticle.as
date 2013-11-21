@@ -1,4 +1,4 @@
-package com.thenitro.ngine.particles.abstract {
+package com.thenitro.ngine.particles.abstract.particles {
 	import starling.display.Shape;
 
 	public class ShapeParticle extends Particle {
@@ -20,10 +20,7 @@ package com.thenitro.ngine.particles.abstract {
 				return;
 			}
 			
-			_shape.graphics.clear();
-			_shape.graphics.beginFill(pColor);
-			_shape.graphics.drawRect(0, 0, 10, 10);
-			_shape.graphics.endFill();
+			drawShape(pColor);
 			
 			_canvas = _shape;
 		};
@@ -36,6 +33,13 @@ package com.thenitro.ngine.particles.abstract {
 			}
 			
 			return false;
+		};
+		
+		protected function drawShape(pColor:uint):void {
+			_shape.graphics.clear();
+			_shape.graphics.beginFill(pColor);
+			_shape.graphics.drawRect(0, 0, 10, 10);
+			_shape.graphics.endFill();
 		};
 	}
 }

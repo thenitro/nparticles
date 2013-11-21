@@ -1,6 +1,6 @@
 package com.thenitro.ngine.particles.abstract.emitters.position {
-	import com.thenitro.ngine.particles.abstract.Particle;
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
+	import com.thenitro.ngine.particles.abstract.particles.Particle;
 	
 	import ngine.math.Random;
 	import ngine.math.vectors.Vector2D;
@@ -18,13 +18,17 @@ package com.thenitro.ngine.particles.abstract.emitters.position {
 			_dimension = pDimension;
 		};
 		
+		public function get dimension():Vector2D {
+			return _dimension;
+		};
+		
 		override public function get reflection():Class {
 			return RectangleParticles;
 		};
 		
 		override public function setUpParticle(pParticle:Particle):void {
-			pParticle.position.x = Random.range(_emitter.position.x, _dimension.x);
-			pParticle.position.y = Random.range(_emitter.position.y, _dimension.y);
+			pParticle.position.x = Random.range(_emitter.position.x, _emitter.position.x + _dimension.x);
+			pParticle.position.y = Random.range(_emitter.position.y, _emitter.position.y + _dimension.y);
 		};
 		
 		override public function poolPrepare():void {

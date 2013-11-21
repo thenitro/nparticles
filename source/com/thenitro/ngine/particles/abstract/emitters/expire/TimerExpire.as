@@ -1,24 +1,26 @@
 package com.thenitro.ngine.particles.abstract.emitters.expire {
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
 	
-	public final class EmissionExpire extends ParticlesExpire {
-		private var _step:Number;
+	public final class TimerExpire extends ParticlesExpire {
 		private var _target:Number;
-		
 		private var _emitter:ParticlesEmitter;
 		
-		public function EmissionExpire() {
+		public function TimerExpire() {
 			super();
 		};
 		
 		override public function get reflection():Class {
-			return EmissionExpire;
+			return TimerExpire;
 		};
 		
 		override public function update(pElapsed:Number):void {
-			_emitter.emissionRate += _step;
+			if (!_emitter) {
+				return;
+			}
 			
-			if (_emitter.emissionRate < _target) {
+			_target -= pElapsed;
+			
+			if (_target <= 0) {
 				_emitter.expire();
 			}
 		};
@@ -35,8 +37,11 @@ package com.thenitro.ngine.particles.abstract.emitters.expire {
 			_emitter = null;
 		};
 		
-		public function init(pEmitter:ParticlesEmitter, pStep:Number, pTarget:Number):void {
-			_step    = pStep;
+		public function init(pEmitter:ParticlesEmitter, pTarget:Number):void {			
+			if (pTarget < 0) {
+				return;	
+			}
+			
 			_target  = pTarget;
 			_emitter = pEmitter;
 		};
