@@ -7,7 +7,7 @@ package {
 	public class NParticlesEditor extends DocumentClass {
 		
 		public function NParticlesEditor() {
-			super(Editor, true);
+			super(Editor);
 		};
 	}
 }
