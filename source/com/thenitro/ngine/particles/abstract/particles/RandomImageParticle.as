@@ -3,7 +3,7 @@ package com.thenitro.ngine.particles.abstract.particles {
 	import starling.textures.Texture;
 	
 	public final class RandomImageParticle extends Particle {
-		private var _textureID:int;
+		private var _textureID:int = -1;
 		
 		public function RandomImageParticle() {
 			super();
