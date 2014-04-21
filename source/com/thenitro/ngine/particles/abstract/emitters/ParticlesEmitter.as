@@ -78,6 +78,18 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_framesPerParticle = 0;
 		};
 		
+		public static function get NEW():ParticlesEmitter {
+			var results:ParticlesEmitter = 
+				_pool.get(ParticlesEmitter) as ParticlesEmitter;
+			
+			if (!results) {
+				results = new ParticlesEmitter();
+				_pool.allocate(ParticlesEmitter, 1);
+			}
+			
+			return results;
+		};
+		
 		override public function get reflection():Class {
 			return ParticlesEmitter;
 		};
@@ -98,7 +110,11 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_expired = pValue;
 		};
 		
-		override public function update(pElapsed:Number):void {			
+		public function get numParticles():int {
+			return _manager.entities.count;
+		};
+		
+		override public function update(pElapsed:Number):void {
 			if (particlesExpire) {
 				particlesExpire.update(pElapsed);
 			}

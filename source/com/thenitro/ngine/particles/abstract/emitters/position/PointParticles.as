@@ -1,12 +1,23 @@
 package com.thenitro.ngine.particles.abstract.emitters.position {
-	import com.thenitro.ngine.particles.abstract.particles.Particle;
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
+	import com.thenitro.ngine.particles.abstract.particles.Particle;
 	
 	public final class PointParticles extends ParticlesPosition {
 		private var _emitter:ParticlesEmitter;
 		
 		public function PointParticles() {
 			super();
+		};
+		
+		public static function get NEW():PointParticles {
+			var result:PointParticles = _pool.get(PointParticles) as PointParticles;
+			
+			if (!result) {
+				result = new PointParticles();
+				_pool.allocate(PointParticles, 1);
+			}
+			
+			return result;
 		};
 		
 		public function init(pEmitter:ParticlesEmitter):void {

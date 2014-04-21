@@ -1,7 +1,9 @@
 package com.thenitro.ngine.particles.abstract.emitters.expire {
 	import npooling.IReusable;
+	import npooling.Pool;
 	
 	public class ParticlesExpire implements IReusable {
+		protected static var _pool:Pool = Pool.getInstance();
 		
 		public function ParticlesExpire() {
 			
