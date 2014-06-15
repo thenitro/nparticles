@@ -1,8 +1,9 @@
 package com.thenitro.ngine.particles.abstract.particles {
-	import ngine.core.Entity;
-	import ngine.math.TMath;
-	
-	public class Particle extends Entity {
+    import ngine.core.Entity;
+
+    import nmath.TMath;
+
+    public class Particle extends Entity {
 		public var initLife:Number;
 		public var life:Number;
 		

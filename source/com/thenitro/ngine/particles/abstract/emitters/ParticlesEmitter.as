@@ -1,19 +1,20 @@
 package com.thenitro.ngine.particles.abstract.emitters {
-	import com.thenitro.ngine.particles.abstract.emitters.expire.ParticlesExpire;
-	import com.thenitro.ngine.particles.abstract.emitters.position.ParticlesPosition;
-	import com.thenitro.ngine.particles.abstract.particles.Particle;
-	
-	import ngine.core.Entity;
-	import ngine.core.manager.EntityManager;
-	import ngine.math.Random;
-	
-	import npooling.IReusable;
-	
-	import starling.display.BlendMode;
-	import starling.display.Sprite;
-	import starling.events.Event;
-	
-	public class ParticlesEmitter extends Entity implements IReusable {
+    import com.thenitro.ngine.particles.abstract.emitters.expire.ParticlesExpire;
+    import com.thenitro.ngine.particles.abstract.emitters.position.ParticlesPosition;
+    import com.thenitro.ngine.particles.abstract.particles.Particle;
+
+    import ngine.core.Entity;
+    import ngine.core.manager.EntityManager;
+
+    import nmath.Random;
+
+    import npooling.IReusable;
+
+    import starling.display.BlendMode;
+    import starling.display.Sprite;
+    import starling.events.Event;
+
+    public class ParticlesEmitter extends Entity implements IReusable {
 		public static const VERSION:String = '1.0.5';
 		
 		public var emissionRate:Number;
