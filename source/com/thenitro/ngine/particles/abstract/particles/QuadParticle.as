@@ -1,24 +1,21 @@
 package com.thenitro.ngine.particles.abstract.particles {
-	import ngine.math.Random;
-	
-	import starling.display.Quad;
-	
-	
-	public final class QuadParticle extends Particle {
+    import starling.display.Quad;
+
+    public final class QuadParticle extends Particle {
 		private var _color:uint;
 		private var _quad:Quad;
 		
 		public function QuadParticle() {
 			super();
 			
-			_color = Random.color;
+			_color = Math.random() * 0xFFFFFF;
 			
 			_quad  = new Quad(100, 100, _color);
 			
 			_quad.pivotX = _quad.width / 2;
 			_quad.pivotY = _quad.height / 2;
 		};
-		
+
 		override public function get reflection():Class {
 			return QuadParticle;
 		};

@@ -15,7 +15,7 @@ package com.thenitro.ngine.particles.abstract.loader {
 		public function loadBytes(pBytes:ByteArray, pTarget:ParticlesEmitter, 
 								  pScaleFactor:Number = 1.0):void {
 			pBytes.uncompress();
-				
+
 			pBytes.position = 0;
 			
 			if (pBytes.readUTF() != "npt") {

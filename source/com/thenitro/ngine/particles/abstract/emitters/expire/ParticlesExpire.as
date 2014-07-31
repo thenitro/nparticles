@@ -4,6 +4,8 @@ package com.thenitro.ngine.particles.abstract.emitters.expire {
 	
 	public class ParticlesExpire implements IReusable {
 		protected static var _pool:Pool = Pool.getInstance();
+
+        private var _disposed:Boolean;
 		
 		public function ParticlesExpire() {
 			
@@ -12,6 +14,10 @@ package com.thenitro.ngine.particles.abstract.emitters.expire {
 		public function get reflection():Class {
 			return ParticlesExpire;
 		};
+
+        public function get disposed():Boolean {
+            return _disposed;
+        };
 		
 		public function update(pElapsed:Number):void {
 			
@@ -22,7 +28,7 @@ package com.thenitro.ngine.particles.abstract.emitters.expire {
 		};
 		
 		public function dispose():void {
-			
+			_disposed = true;
 		};
 	}
 }

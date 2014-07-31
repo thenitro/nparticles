@@ -1,46 +1,45 @@
 package nparticles.editor {
-	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
-	import com.thenitro.ngine.particles.abstract.emitters.position.RectangleParticles;
-	import com.thenitro.ngine.particles.abstract.loader.EmitterParametersLoader;
-	import com.thenitro.ngine.particles.abstract.particles.ImageParticle;
-	import com.thenitro.ngine.particles.abstract.particles.QuadParticle;
-	
-	import feathers.controls.Button;
-	import feathers.controls.Label;
-	import feathers.controls.NumericStepper;
-	import feathers.controls.PickerList;
-	import feathers.controls.ScrollContainer;
-	import feathers.data.ListCollection;
-	import feathers.layout.HorizontalLayout;
-	import feathers.layout.VerticalLayout;
-	import feathers.themes.AeonDesktopTheme;
-	
-	import flash.display.Bitmap;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.net.FileFilter;
-	import flash.net.FileReference;
-	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
-	
-	import ngine.math.Geometry;
-	import ngine.math.Random;
-	import ngine.math.vectors.Vector2D;
-	
-	import starling.display.BlendMode;
-	import starling.display.Image;
-	import starling.display.Quad;
-	import starling.display.Sprite;
-	import starling.events.EnterFrameEvent;
-	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
-	import starling.textures.Texture;
-	import starling.utils.deg2rad;
-	import starling.utils.rad2deg;
-	
-	public final class Editor extends Sprite {
+    import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
+    import com.thenitro.ngine.particles.abstract.emitters.position.RectangleParticles;
+    import com.thenitro.ngine.particles.abstract.loader.EmitterParametersLoader;
+    import com.thenitro.ngine.particles.abstract.particles.ImageParticle;
+    import com.thenitro.ngine.particles.abstract.particles.QuadParticle;
+
+    import feathers.controls.Button;
+    import feathers.controls.Label;
+    import feathers.controls.NumericStepper;
+    import feathers.controls.PickerList;
+    import feathers.controls.ScrollContainer;
+    import feathers.data.ListCollection;
+    import feathers.layout.HorizontalLayout;
+    import feathers.layout.VerticalLayout;
+    import feathers.themes.MinimalDesktopTheme;
+
+    import flash.display.Bitmap;
+    import flash.display.Loader;
+    import flash.events.Event;
+    import flash.net.FileFilter;
+    import flash.net.FileReference;
+    import flash.utils.ByteArray;
+    import flash.utils.getTimer;
+
+    import nmath.Random;
+    import nmath.vectors.Vector2D;
+
+    import starling.display.BlendMode;
+    import starling.display.Image;
+    import starling.display.Quad;
+    import starling.display.Sprite;
+    import starling.events.EnterFrameEvent;
+    import starling.events.Event;
+    import starling.events.Touch;
+    import starling.events.TouchEvent;
+    import starling.events.TouchPhase;
+    import starling.textures.Texture;
+    import starling.utils.deg2rad;
+    import starling.utils.rad2deg;
+
+    public final class Editor extends Sprite {
 		private var _emitter:ParticlesEmitter;
 		
 		private var _file:ScrollContainer;
@@ -92,7 +91,7 @@ package nparticles.editor {
 		private function addedToStageEventHandler(pEvent:starling.events.Event):void {
 			removeEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageEventHandler);
 			
-			new AeonDesktopTheme();
+			new MinimalDesktopTheme();
 			
 			createBackground();
 			createWorkingZone();
@@ -143,7 +142,7 @@ package nparticles.editor {
 			
 			_emitter.ParticleClass = QuadParticle;
 			
-			_emitter.particleData = Random.color;
+			_emitter.particleData = Math.random() * 0xFFFFFF;
 			
 			_emitter.blendMode = BlendMode.AUTO;
 			
@@ -237,7 +236,7 @@ package nparticles.editor {
 		
 		private function createWorkingZone():void {
 			var workingZone:Sprite = new Sprite();
-				workingZone.addChild(new Quad(stage.stageWidth - 100, stage.stageHeight - 20, Random.color));
+				workingZone.addChild(new Quad(stage.stageWidth - 100, stage.stageHeight - 20, Math.random() * 0xFFFFFF));
 				workingZone.alpha = 0;
 			
 			addChild(workingZone);
@@ -403,7 +402,7 @@ package nparticles.editor {
 		};
 		
 		private function emitterWidthChangeEventHandler(pEvent:starling.events.Event):void {
-			(_emitter.particlesPosition as RectangleParticles).dimension.x = (pEvent.target as NumericStepper).value;
+            (_emitter.particlesPosition as RectangleParticles).dimension.x = (pEvent.target as NumericStepper).value;
 		};
 		
 		private function emitterHeightChangeEventHandler(pEvent:starling.events.Event):void {
@@ -429,10 +428,8 @@ package nparticles.editor {
 							var bitmap:Bitmap = pEvent.currentTarget.loader.content as Bitmap;
 							var image:Image   = new Image(Texture.fromBitmap(bitmap, false));
 							
-							Geometry.resizeDisplayObject(image, stage.stageWidth, stage.stageHeight, Geometry.determineMinScale);
-							
-							image.x = (stage.stageWidth  - image.width)  / 2;
-							image.y = (stage.stageHeight - image.height) / 2;
+                                image.x = (stage.stageWidth  - image.width)  / 2;
+                                image.y = (stage.stageHeight - image.height) / 2;
 							
 							_background.removeChildren(0, -1, true);
 							_background.addChild(image);
