@@ -23,7 +23,6 @@ package nparticles.editor {
     import flash.utils.ByteArray;
     import flash.utils.getTimer;
 
-    import nmath.Random;
     import nmath.vectors.Vector2D;
 
     import starling.display.BlendMode;
