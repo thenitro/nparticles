@@ -257,6 +257,10 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			if (!particle || particle.expired) {
 				return;
 			}
+
+            if (!_container) {
+                return;
+            }
 			
 			_container.addChild(particle.canvas);
 		};
