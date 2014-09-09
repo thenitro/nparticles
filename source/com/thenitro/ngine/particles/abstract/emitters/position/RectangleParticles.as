@@ -13,6 +13,17 @@ package com.thenitro.ngine.particles.abstract.emitters.position {
 		public function RectangleParticles() {
 			super();
 		};
+
+        public static function get NEW():RectangleParticles {
+            var result:RectangleParticles = _pool.get(RectangleParticles) as RectangleParticles;
+
+            if (!result) {
+                result = new RectangleParticles();
+                _pool.allocate(RectangleParticles, 1);
+            }
+
+            return result;
+        };
 		
 		public function init(pEmitter:ParticlesEmitter, pDimension:Vector2D):void {
 			_emitter   = pEmitter;
