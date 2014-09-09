@@ -1,8 +1,9 @@
 package com.thenitro.ngine.particles.abstract.particles {
 	import starling.display.Image;
 	import starling.textures.Texture;
-	
-	public final class ImageParticle extends Particle {
+    import starling.textures.TextureSmoothing;
+
+    public final class ImageParticle extends Particle {
 		private var _texture:Texture;
 		
 		public function ImageParticle() {
@@ -19,8 +20,11 @@ package com.thenitro.ngine.particles.abstract.particles {
 			}
 			
 			_canvas = new Image(pTexure);
+
 			_canvas.pivotX = _canvas.width  / 2;
 			_canvas.pivotY = _canvas.height / 2;
+
+            (_canvas as Image).smoothing = TextureSmoothing.NONE;
 		};
 		
 		protected function needRedraw(pTexture:Texture):Boolean {

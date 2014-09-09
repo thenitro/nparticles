@@ -23,6 +23,8 @@ package nparticles.editor {
     import flash.utils.ByteArray;
     import flash.utils.getTimer;
 
+    import nmath.TMath;
+
     import nmath.vectors.Vector2D;
 
     import starling.display.BlendMode;
@@ -113,8 +115,8 @@ package nparticles.editor {
 			_emitter.emissionRate = 1.0;
 			_emitter.emissionRateVariation = 0.5;
 			
-			_emitter.emissionDelay =   0.0;
-			_emitter.emissionTime  = 100.0;
+			_emitter.emissionDelay =   0.1;
+			_emitter.emissionTime  =  -1.0;
 			
 			_emitter.particleLife = 8.0;
 			_emitter.particleLifeVariation = 1.0;
@@ -166,8 +168,8 @@ package nparticles.editor {
 			
 			_prewarm = createStepper("Prewarm", 1.0, 0.05, emissionPrewarmChangeEventHandler);
 			
-			_emissionRate 		   = createStepper("Emission rate",  _emitter.emissionRate, 0.05, emissionRateChangeEventHandler);
-			_emissionRateVariation = createStepper("Rate variation", _emitter.emissionRateVariation, 0.05, emissionRateVariationChangeEventHandler);
+			_emissionRate 		   = createStepper("Emission rate",  _emitter.emissionRate, 0.001, emissionRateChangeEventHandler);
+			_emissionRateVariation = createStepper("Rate variation", _emitter.emissionRateVariation, 0.001, emissionRateVariationChangeEventHandler);
 			
 			_emissionDelay = createStepper("Emission delay", _emitter.emissionDelay, 0.05, emissionDelayChangeEventHandler);
 			_emissionTime  = createStepper("Emission time",  _emitter.emissionTime, 0.05, emissionTimeChangeEventHandler);
@@ -298,8 +300,8 @@ package nparticles.editor {
 				stepper.width  = 100;
 				stepper.height =  20;
 				
-				stepper.minimum = -uint.MAX_VALUE;
-				stepper.maximum =  uint.MAX_VALUE;
+				stepper.minimum = Number.MIN_VALUE;
+				stepper.maximum = Number.MAX_VALUE;
 				
 				stepper.value = pInitValue;
 				
@@ -313,7 +315,7 @@ package nparticles.editor {
 		};
 		
 		private function emissionPrewarmChangeEventHandler(pEvent:starling.events.Event):void {
-			
+
 		};
 		
 		private function emissionRateChangeEventHandler(pEvent:starling.events.Event):void {
