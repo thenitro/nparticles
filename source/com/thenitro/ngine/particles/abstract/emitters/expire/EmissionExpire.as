@@ -29,8 +29,6 @@ package com.thenitro.ngine.particles.abstract.emitters.expire {
 		override public function update(pElapsed:Number):void {
 			_emitter.emissionRate += _step;
 			
-			trace("EmissionExpire.update(pElapsed)", _emitter.emissionRate, _target);
-			
 			if (_emitter.emissionRate < _target) {
 				_emitter.expire();
 			}

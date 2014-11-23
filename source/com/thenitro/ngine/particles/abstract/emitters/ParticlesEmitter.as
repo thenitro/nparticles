@@ -94,6 +94,10 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		override public function get reflection():Class {
 			return ParticlesEmitter;
 		};
+        
+        public function get manager():EntityManager {
+            return _manager;
+        };
 		
 		public function get emissionTime():Number {
 			return _emissionTime;
@@ -106,7 +110,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 				_emissionTime = pValue;
 			}
 		};
-		
+
 		public function set expired(pValue:Boolean):void {
 			_expired = pValue;
 		};

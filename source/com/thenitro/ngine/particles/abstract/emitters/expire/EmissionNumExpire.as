@@ -1,10 +1,15 @@
 package com.thenitro.ngine.particles.abstract.emitters.expire {
 	import com.thenitro.ngine.particles.abstract.emitters.ParticlesEmitter;
 
-	public final class EmissionNumExpire extends ParticlesExpire {
+    import ngine.core.manager.EntityManager;
+
+    import starling.events.Event;
+
+    public final class EmissionNumExpire extends ParticlesExpire {
 		private var _target:Number;
 		private var _emitter:ParticlesEmitter;
 
+        private var _count:int;
 		
 		public function EmissionNumExpire() {
 			super();
@@ -25,27 +30,38 @@ package com.thenitro.ngine.particles.abstract.emitters.expire {
 			return EmissionNumExpire;
 		};
 		
-		override public function update(pElapsed:Number):void {
-			if (_emitter.numParticles == _target) {
-				_emitter.emissionRate = 0.0;
-			}
-		};
+		override public function update(pElapsed:Number):void {};
 		
 		override public function poolPrepare():void {
 			super.poolPrepare();
-			
+
+            _count   = 0;
+
+            _emitter.manager.removeEventListener(EntityManager.ADDED, adddedEventHandler);
 			_emitter = null;
 		};
 		
 		override public function dispose():void {
 			super.dispose();
-			
+
+            _emitter.manager.removeEventListener(EntityManager.ADDED, adddedEventHandler);
 			_emitter = null;
 		};
 		
 		public function init(pEmitter:ParticlesEmitter, pTarget:int):void {
+            _count   = 0;
 			_target  = pTarget;
 			_emitter = pEmitter;
+            _emitter.manager.addEventListener(EntityManager.ADDED, adddedEventHandler);
 		};
+
+        private function adddedEventHandler(pEvent:Event):void {
+            _count++;
+
+            if (_count >= _target) {
+                _emitter.manager.removeEventListener(EntityManager.ADDED, adddedEventHandler);
+                _emitter.emissionRate = 0.0;
+            }
+        };
 	}
 }
