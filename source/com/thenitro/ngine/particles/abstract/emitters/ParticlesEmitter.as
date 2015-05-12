@@ -120,6 +120,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		};
 		
 		override public function update(pElapsed:Number):void {
+			trace('ParticlesEmitter.update:', _manager.entities.count);
+
 			if (particlesExpire) {
 				particlesExpire.update(pElapsed);
 			}
@@ -231,12 +233,11 @@ package com.thenitro.ngine.particles.abstract.emitters {
 					particle.initLife = Random.variation(particleLife,
 														 particleLifeVariation);
 					
-					
 					particle.alphaGrowTime   = particleAlphaGrowRatio   * particle.initLife;
 					particle.alphaShrinkTime = particleAlphaShrinkRatio * particle.initLife;
 					
 					particle.velocity.fromAngle(Random.variation(direction, 
-																 directionVariation), 
+																 directionVariation),
 												Random.variation(particleSpeed, 
 																 particleSpeedVariation));
 					
@@ -276,7 +277,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			
 			_container.removeChild(pEvent.data.canvas);
 			
-			if (_manager.entities.count == 1) {
+			if (_manager.entities.count <= 1) {
 				expire();
 			}
 		};

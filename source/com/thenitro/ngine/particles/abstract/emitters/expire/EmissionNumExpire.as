@@ -35,7 +35,7 @@ package com.thenitro.ngine.particles.abstract.emitters.expire {
 		override public function poolPrepare():void {
 			super.poolPrepare();
 
-            _count   = 0;
+            _count  = 0;
 
             _emitter.manager.removeEventListener(EntityManager.ADDED, adddedEventHandler);
 			_emitter = null;
