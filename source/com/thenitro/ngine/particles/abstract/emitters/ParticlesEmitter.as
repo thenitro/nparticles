@@ -120,8 +120,6 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		};
 		
 		override public function update(pElapsed:Number):void {
-			trace('ParticlesEmitter.update:', _manager.entities.count);
-
 			if (particlesExpire) {
 				particlesExpire.update(pElapsed);
 			}
