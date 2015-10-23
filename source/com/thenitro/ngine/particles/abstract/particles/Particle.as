@@ -1,7 +1,7 @@
 package com.thenitro.ngine.particles.abstract.particles {
     import ngine.core.Entity;
 
-    import nmath.TMath;
+    import nmath.NMath;
 
     public class Particle extends Entity {
 		public var initLife:Number;
@@ -38,17 +38,17 @@ package com.thenitro.ngine.particles.abstract.particles {
 			}
 			
 			if (life > initLife - growTime) {
-				scale = TMath.lerp(0.0, initScale, (initLife - life) / growTime);
+				scale = NMath.lerp(0.0, initScale, (initLife - life) / growTime);
 			} else if (life < shrinkTime) {
-				scale = TMath.lerp(initScale, 0.0, (shrinkTime - life) / shrinkTime);
+				scale = NMath.lerp(initScale, 0.0, (shrinkTime - life) / shrinkTime);
 			} else {
 				scale = initScale;
 			}
 			
 			if (life > initLife - alphaGrowTime) {
-				alpha = TMath.lerp(0.0, initAlpha, (initLife - life) / alphaGrowTime);
+				alpha = NMath.lerp(0.0, initAlpha, (initLife - life) / alphaGrowTime);
 			} else if (life < shrinkTime) {
-				alpha = TMath.lerp(initAlpha, 0.0, (alphaShrinkTime - life) / alphaShrinkTime);
+				alpha = NMath.lerp(initAlpha, 0.0, (alphaShrinkTime - life) / alphaShrinkTime);
 			} else {
 				alpha = initAlpha;
 			}
