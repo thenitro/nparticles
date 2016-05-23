@@ -1,14 +1,14 @@
 package com.thenitro.ngine.particles.abstract.particles {
-	import starling.display.Shape;
+	import starling.display.Canvas;
 
 	public class ShapeParticle extends Particle {
-		protected var _shape:Shape;
+		protected var _shape:Canvas;
 		private var _color:uint;
 		
 		public function ShapeParticle() {
 			super();
 			
-			_shape = new Shape();
+			_shape = new Canvas();
 		};
 		
 		override public function get reflection():Class {
@@ -36,10 +36,10 @@ package com.thenitro.ngine.particles.abstract.particles {
 		};
 		
 		protected function drawShape(pColor:uint):void {
-			_shape.graphics.clear();
-			_shape.graphics.beginFill(pColor);
-			_shape.graphics.drawRect(0, 0, 10, 10);
-			_shape.graphics.endFill();
+			_shape.clear();
+			_shape.beginFill(pColor);
+			_shape.drawRectangle(0, 0, 10, 10);
+			_shape.endFill();
 		};
 	}
 }
