@@ -24,7 +24,7 @@ package com.thenitro.ngine.particles.abstract.particles {
 			_canvas.pivotX = _canvas.width  / 2;
 			_canvas.pivotY = _canvas.height / 2;
 
-            (_canvas as Image).smoothing = TextureSmoothing.NONE;
+            (_canvas as Image).textureSmoothing = TextureSmoothing.NONE;
 		};
 		
 		protected function needRedraw(pTexture:Texture):Boolean {

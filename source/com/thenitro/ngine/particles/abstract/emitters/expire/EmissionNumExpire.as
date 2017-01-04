@@ -61,6 +61,7 @@ package com.thenitro.ngine.particles.abstract.emitters.expire {
             if (_count >= _target) {
                 _emitter.manager.removeEventListener(EntityManager.ADDED, adddedEventHandler);
                 _emitter.emissionRate = 0.0;
+				_emitter.emissionRateVariation = 0.0;
             }
         };
 	}

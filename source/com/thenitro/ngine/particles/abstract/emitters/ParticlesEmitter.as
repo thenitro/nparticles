@@ -18,7 +18,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		public static const VERSION:String = '1.0.5';
 		
 		public var emissionRate:Number;
-		public var emissionRateVariation:Number;
+		public var emissionRateVariation:Number = 0.0;
 		
 		public var emissionDelay:Number;
 		
@@ -31,8 +31,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		public var particleGrowRatio:Number;
 		public var particleShrinkRatio:Number;
 		
-		public var particleAlpha:Number;
-		public var particleAlphaVariation:Number;
+		public var particleAlpha:Number = 1.0;
+		public var particleAlphaVariation:Number = 0.0;
 		
 		public var particleAlphaGrowRatio:Number;
 		public var particleAlphaShrinkRatio:Number;
@@ -190,11 +190,13 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		};
 		
 		private function generateNewParticles():void {
+			var random:Number = Random.variation(emissionRate, emissionRateVariation);
+
 			if (emissionRate >= 1) {
-				createParticles(Random.variation(emissionRate, emissionRateVariation));
+				createParticles(random);
 			} else {
 				if (emissionRate < 1) {
-					_framesPerParticle += Random.variation(emissionRate, emissionRateVariation);
+					_framesPerParticle += random;
 					
 					if (_framesPerParticle > 1) {
 						createParticles(1);
