@@ -40,8 +40,9 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		public var particleSpeed:Number;
 		public var particleSpeedVariation:Number;
 		
-		public var particleOmegaVariation:Number;
-		
+		public var particleOmegaVariationMin:Number = 0.0;
+		public var particleOmegaVariationMax:Number;
+
 		public var direction:Number;
 		public var directionVariation:Number;
 		
@@ -146,6 +147,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		
 		override public function poolPrepare():void {
 			super.poolPrepare();
+			clean();
 			
 			_framesPerParticle = 0;
 			
@@ -241,7 +243,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 												Random.variation(particleSpeed, 
 																 particleSpeedVariation));
 					
-					particle.omega = Random.variation(0.0, particleOmegaVariation);
+					particle.omega = Random.variation(particleOmegaVariationMin, particleOmegaVariationMax);
 					particle.life  = particle.initLife;
 					
 					particle.draw(particleData);

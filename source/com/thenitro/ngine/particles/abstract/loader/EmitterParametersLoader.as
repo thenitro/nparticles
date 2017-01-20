@@ -51,7 +51,7 @@ package com.thenitro.ngine.particles.abstract.loader {
 			pTarget.particleSpeed = pBytes.readDouble() * pScaleFactor;
 			pTarget.particleSpeedVariation = pBytes.readDouble() * pScaleFactor;
 			
-			pTarget.particleOmegaVariation = pBytes.readDouble() * pScaleFactor;
+			pTarget.particleOmegaVariationMax = pBytes.readDouble() * pScaleFactor;
 			
 			pTarget.direction = pBytes.readDouble();
 			pTarget.directionVariation = pBytes.readDouble();
