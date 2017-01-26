@@ -116,10 +116,11 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_expired = pValue;
 		};
 		
-		public function get numParticles():int {
+		[Inline]
+        public function get numParticles():int {
 			return _manager.entities.count;
 		};
-		
+
 		override public function update(pElapsed:Number):void {
 			if (particlesExpire) {
 				particlesExpire.update(pElapsed);
@@ -155,7 +156,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			_pool.put(particlesExpire);
 			
 			particlesPosition = null;
-			particlesExpire   = null;			
+			particlesExpire   = null;
 		};
 		
 		override public function dispose():void {
@@ -190,7 +191,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 		public function clean():void {
 			_manager.clean();
 		};
-		
+
+		[Inline]
 		private function generateNewParticles():void {
 			var random:Number = Random.variation(emissionRate, emissionRateVariation);
 
@@ -208,7 +210,8 @@ package com.thenitro.ngine.particles.abstract.emitters {
 				}
 			}
 		};
-		
+
+		[Inline]
 		private function createParticles(pNumParticles:uint):void {
 			for (var i:int = 0; i < pNumParticles; i++) {
 				var particle:Particle = _pool.get(ParticleClass) as Particle;
@@ -279,7 +282,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 			
 			_container.removeChild(pEvent.data.canvas);
 			
-			if (_manager.entities.count <= 1) {
+			if (numParticles < 1) {
 				expire();
 			}
 		};
