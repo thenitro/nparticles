@@ -194,7 +194,7 @@ package com.thenitro.ngine.particles.abstract.emitters {
 
 		[Inline]
 		private function generateNewParticles():void {
-			var random:Number = Random.variation(emissionRate, emissionRateVariation);
+			var random:Number = Math.max(0, Random.variation(emissionRate, emissionRateVariation));
 
 			if (emissionRate >= 1) {
 				createParticles(random);
